@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>The calls you never knew you missed | Steel Rule Studio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F4F3F0; --card:#FFFFFF; --raised:#EDEBE6; --edge:#DEDAD2;
+    --ink:#1B1E24; --muted:#5E6570; --faint:#8A919B;
+    --accent:#8A5A16; --accent-bg:#F6EEDF;
+    --fault:#A8433A; --fault-bg:#F8E8E6;
+    --ok:#33705A; --ok-bg:#E3F0EA;
+    --info:#2B5F80; --info-bg:#E4EEF5;
+    --shadow:0 1px 2px rgba(20,22,28,.07),0 4px 14px rgba(20,22,28,.05);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#131519; --card:#1B1E24; --raised:#22262D; --edge:#2B3038;
+      --ink:#E7EAEE; --muted:#98A1AC; --faint:#6F7885;
+      --accent:#D9A34E; --accent-bg:#2C2415;
+      --fault:#DE8378; --fault-bg:#35201D;
+      --ok:#6CBE9C; --ok-bg:#16301F;
+      --info:#71AFD4; --info-bg:#152833;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ground);color:var(--ink);
+    font-family:Barlow,system-ui,-apple-system,Segoe UI,sans-serif;
+    font-size:16px;line-height:1.55}
+  .frame{background:var(--ink);color:var(--ground);padding:7px 14px;
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;text-align:center;line-height:1.4}
+  .frame b{color:#D9A34E;font-weight:600}
+  .frame span{opacity:.72}
+
+  .wrap{max-width:940px;margin:0 auto;padding:30px 20px 70px;
+    display:flex;flex-direction:column;gap:26px}
+  .kick{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{margin:7px 0 0;font-size:clamp(27px,4.3vw,40px);font-weight:700;
+    letter-spacing:-.025em;line-height:1.05;text-wrap:balance}
+  .lede{color:var(--muted);margin:11px 0 0;max-width:62ch;font-size:16.5px}
+  .quote{border-left:3px solid var(--accent);background:var(--accent-bg);
+    padding:13px 17px;border-radius:0 8px 8px 0;margin:18px 0 0;max-width:62ch}
+  .quote p{margin:0;font-size:16px;font-style:italic}
+  .quote cite{display:block;font-style:normal;font-size:12.5px;color:var(--muted);
+    margin-top:6px;font-family:"IBM Plex Mono",monospace}
+
+  h2{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--faint);margin:0 0 14px;font-weight:600}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+    border:1px solid var(--edge);border-radius:11px;overflow:hidden;background:var(--card);
+    box-shadow:var(--shadow)}
+  .stat{padding:15px 17px;border-right:1px solid var(--edge)}
+  .stat:last-child{border-right:0}
+  .stat b{display:block;font-family:"IBM Plex Mono",monospace;font-size:27px;
+    font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+  .stat .l{font-size:13px;color:var(--muted);margin-top:3px}
+  .stat.hero b{color:var(--fault)}
+  .stat.good b{color:var(--ok)}
+
+  .split{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;
+    align-items:start}
+  @media (max-width:800px){.split{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--edge);border-radius:11px;
+    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
+  .panel .ph{padding:11px 15px;border-bottom:1px solid var(--edge);background:var(--raised);
+    display:flex;align-items:center;gap:10px}
+  .panel .ph h3{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;flex:1}
+  .replay{border:1px solid var(--edge);background:var(--card);border-radius:7px;
+    padding:5px 11px;font-family:"IBM Plex Mono",monospace;font-size:11px;
+    cursor:pointer;color:var(--ink)}
+  .replay:hover{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
+  .replay:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+  .convo{padding:15px;display:flex;flex-direction:column;gap:11px;min-height:330px}
+  .turn{display:flex;gap:10px;max-width:92%}
+  .turn.them{align-self:flex-start}
+  .turn.agent{align-self:flex-end;flex-direction:row-reverse}
+  .turn .tag{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.09em;
+    color:var(--faint);padding-top:8px;white-space:nowrap}
+  .turn .bub{padding:9px 13px;border-radius:12px;font-size:14.5px;line-height:1.45}
+  .turn.them .bub{background:var(--raised);border:1px solid var(--edge);border-bottom-left-radius:4px}
+  .turn.agent .bub{background:var(--info-bg);border:1px solid var(--info);
+    color:var(--ink);border-bottom-right-radius:4px}
+
+  .ext{padding:0;display:flex;flex-direction:column}
+  .row{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:10px 15px;
+    border-bottom:1px solid var(--edge);font-size:14px;align-items:baseline}
+  .row:last-child{border-bottom:0}
+  .row .k{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--faint)}
+  .row .v{font-weight:500}
+  .row .v small{display:block;color:var(--muted);font-weight:400;font-size:12.5px;margin-top:1px}
+  .row.pend .v{color:var(--faint);font-weight:400;font-style:italic}
+  .badge{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;
+    letter-spacing:.09em;text-transform:uppercase;font-weight:600;padding:2px 6px;
+    border-radius:4px;margin-left:5px}
+  .b-ok{background:var(--ok-bg);color:var(--ok)}
+  .b-warn{background:var(--fault-bg);color:var(--fault)}
+
+  .outcome{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .oc{background:var(--card);border:1px solid var(--edge);border-radius:11px;
+    padding:15px 17px;box-shadow:var(--shadow)}
+  .oc .t{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+  .oc .m{font-weight:600;font-size:15.5px;letter-spacing:-.01em}
+  .oc p{margin:5px 0 0;font-size:13.5px;color:var(--muted)}
+  .sms{background:var(--raised);border:1px solid var(--edge);border-radius:10px;
+    padding:11px 13px;font-size:13.5px;margin-top:9px;line-height:1.45}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--edge);border-radius:11px;
+    background:var(--card);box-shadow:var(--shadow)}
+  table{border-collapse:separate;border-spacing:0;width:100%;min-width:640px}
+  th{background:var(--raised);text-align:left;padding:10px 14px;
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);font-weight:600;
+    border-bottom:1px solid var(--edge);white-space:nowrap}
+  td{padding:10px 14px;border-bottom:1px solid var(--edge);font-size:14px;vertical-align:top}
+  tr:last-child td{border-bottom:0}
+  td.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
+    white-space:nowrap;font-size:13px}
+  tr.miss td{background:var(--fault-bg)}
+  tr.miss td:first-child{box-shadow:inset 3px 0 0 var(--fault)}
+
+  .note{color:var(--muted);font-size:14px;max-width:66ch}
+  .note b{color:var(--ink)}
+  footer{border-top:1px solid var(--edge);padding-top:18px;color:var(--muted);font-size:13.5px}
+  footer b{color:var(--ink)}
+  footer a{color:var(--accent)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="frame"><b>DEMONSTRATION</b>
+  <span>built for Sunny Energy RX by Steel Rule Studio &middot; sample data</span></div>
+
+<div class="wrap">
+
+<header>
+  <div class="kick">Workstream one &middot; inbound</div>
+  <h1>The calls you never knew you missed</h1>
+  <p class="lede">Five people cannot always reach the phone, and a caller who hangs
+  up leaves no trace. This answers when nobody can, works out whether it is a job
+  worth taking, books it, and writes down every call either way.</p>
+  <blockquote class="quote">
+    <p>"We don't know what calls we're missing. If somebody doesn't leave a message,
+    we don't know if it was a wrong call or a prank call or a spam call, or if it was
+    a customer who just moved on to another company. My gut says that's a bigger
+    problem than we realise."</p>
+    <cite>Joe, 15 September</cite>
+  </blockquote>
+</header>
+
+<section>
+  <h2>One week, illustrative</h2>
+  <div class="stats">
+    <div class="stat"><b>31</b><div class="l">calls in</div></div>
+    <div class="stat"><b>18</b><div class="l">reached the team</div></div>
+    <div class="stat hero"><b>13</b><div class="l">would have rung out</div></div>
+    <div class="stat good"><b>9</b><div class="l">answered and qualified</div></div>
+    <div class="stat good"><b>6</b><div class="l">booked a visit</div></div>
+  </div>
+  <p class="note" style="margin-top:12px"><b>These are sample figures, not yours.</b>
+  The point is the third column. Today those thirteen leave no record at all, so
+  nobody can tell a wrong number from a customer who went to a competitor. Once
+  something picks up, every one of them becomes a row you can read.</p>
+</section>
+
+<section>
+  <h2>What answering actually looks like</h2>
+  <div class="split">
+    <div class="panel">
+      <div class="ph"><h3>Tuesday 4:52pm, after hours</h3>
+        <button class="replay" id="replay">Replay</button></div>
+      <div class="convo" id="convo"></div>
+    </div>
+    <div class="panel">
+      <div class="ph"><h3>What it worked out</h3></div>
+      <div class="ext" id="ext"></div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:12px">Chris said most callers open with one of
+  four or five things. That is what makes this tractable. The agent is not holding
+  an open ended conversation, it is separating a serviceable job from a wrong
+  number, and handing anything unusual straight to a person.</p>
+</section>
+
+<section>
+  <h2>And then it did these, without anyone touching it</h2>
+  <div class="outcome">
+    <div class="oc">
+      <div class="t">Booked</div>
+      <div class="m">Thursday 18 Sep, 8am to 11am</div>
+      <p>Written into the open slot on the schedule. One entry, not typed twice.</p>
+    </div>
+    <div class="oc">
+      <div class="t">Texted the customer</div>
+      <div class="m">Confirmation, 4:54pm</div>
+      <div class="sms">Sunny Energy RX: you are booked Thu 18 Sep, 8 to 11am for a
+      diagnostic on your SolarEdge system. Reply R to move it.</div>
+    </div>
+    <div class="oc">
+      <div class="t">Flagged for the office</div>
+      <div class="m">Orphaned Titan system</div>
+      <p>Installer out of business, so the workmanship warranty is gone but the
+      SolarEdge equipment warranty may still be live. Worth checking before the visit.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The ledger, which is the part that matters</h2>
+  <div class="tablewrap">
+    <table>
+      <thead><tr>
+        <th>When</th><th>Caller</th><th>What they wanted</th>
+        <th>Reached a person?</th><th>Outcome</th>
+      </tr></thead>
+      <tbody id="ledger"></tbody>
+    </table>
+  </div>
+  <p class="note" style="margin-top:12px">Shaded rows are calls that would have rung
+  out today. <b>Four of them booked a visit.</b> The two marked as not a fit are
+  worth as much as the bookings, because knowing a call was a solar sales cold call
+  is how you stop wondering what you lost.</p>
+</section>
+
+<footer>
+  <b>What this is.</b> A demonstration of the flow, built from what you described on
+  the call. It is not connected to your phone line or to Zoho FSM yet, and the names,
+  addresses and numbers are invented. What would take real work is the connection to
+  your calendar and to Zoho, which is what the estimate covers.
+</footer>
+
+</div>
+
+<script>
+// Illustrative call. Nothing here is real customer data.
+const TURNS = [
+  {w:"agent", who:"AGENT", t:"Sunny Energy RX, service line. How can I help?"},
+  {w:"them",  who:"CALLER", t:"Hi, yeah. My solar's been off about two weeks. The app's showing some kind of error."},
+  {w:"agent", who:"AGENT", t:"Sorry about that, we can take a look. Can I get the service address?"},
+  {w:"them",  who:"CALLER", t:"It's in Sun City West, 85375."},
+  {w:"agent", who:"AGENT", t:"That's in our area. Do you know who put the system in?"},
+  {w:"them",  who:"CALLER", t:"Titan. They went under, that's the whole problem."},
+  {w:"agent", who:"AGENT", t:"We see a lot of those. Does the error give you a code?"},
+  {w:"them",  who:"CALLER", t:"It says something about isolation? There's a red light on the box."},
+  {w:"agent", who:"AGENT", t:"An isolation fault usually means someone on the roof rather than a reset. I have Thursday morning or Friday afternoon."},
+  {w:"them",  who:"CALLER", t:"Thursday's better."},
+  {w:"agent", who:"AGENT", t:"Booked, Thursday the 18th between 8 and 11. You'll get a text to confirm."}
+];
+
+// Each field resolves at the turn where the agent actually learns it.
+const FIELDS = [
+  {k:"Address",    at:3,  v:"Sun City West, AZ 85375", s:"Caller ID captured"},
+  {k:"In area",    at:4,  v:"Yes", badge:"b-ok", bt:"serviceable"},
+  {k:"Installer",  at:5,  v:"Titan Solar", s:"Out of business since June 2024", badge:"b-warn", bt:"orphan"},
+  {k:"Inverter",   at:7,  v:"SolarEdge", s:"Inferred from the error code format"},
+  {k:"Fault",      at:8,  v:"Isolation fault", s:"Not resettable remotely, needs a site visit"},
+  {k:"Needs",      at:8,  v:"Diagnostic site visit"},
+  {k:"Worth it",   at:8,  v:"Yes", badge:"b-ok", bt:"qualified"},
+  {k:"Booked",     at:10, v:"Thu 18 Sep, 8 to 11am"}
+];
+
+const LEDGER = [
+  ["Mon 7:41am","Sun City West","System down, no production","No","Booked Wed"],
+  ["Mon 11:02am","Surprise","Quote for added panels","Yes","Quoted"],
+  ["Mon 6:18pm","Peoria","Inverter error after storm","No","Booked Thu"],
+  ["Tue 8:55am","Goodyear","Monitoring app login","Yes","Resolved on the call"],
+  ["Tue 1:30pm","Withheld","Solar sales cold call","No","Not a fit"],
+  ["Tue 4:52pm","Sun City West","Isolation fault, two weeks down","No","Booked Thu"],
+  ["Wed 7:12am","Buckeye","Panel cleaning","Yes","Booked Mon"],
+  ["Wed 5:47pm","Glendale","Production down, high bill","No","Booked Fri"],
+  ["Thu 12:20pm","Withheld","Wrong number","No","Not a fit"],
+  ["Thu 6:31pm","Avondale","Battery add on","No","Callback booked"],
+  ["Fri 7:58am","Mesa","Roof leak near mounts","Yes","Referred out"]
+];
+
+const ext = document.getElementById("ext");
+const convo = document.getElementById("convo");
+let timer = null;
+
+function paintExt(upto){
+  ext.innerHTML = FIELDS.map(f => {
+    const known = upto >= f.at;
+    return `<div class="row ${known?"":"pend"}">
+      <span class="k">${f.k}</span>
+      <span class="v">${known ? f.v + (f.badge?`<span class="badge ${f.badge}">${f.bt}</span>`:"")
+                              : "listening"}
+        ${known && f.s ? `<small>${f.s}</small>` : ""}
+      </span></div>`;
+  }).join("");
+}
+
+function paintConvo(upto){
+  convo.innerHTML = TURNS.slice(0, upto+1).map(t =>
+    `<div class="turn ${t.w}"><span class="tag">${t.who}</span>
+     <span class="bub">${t.t}</span></div>`).join("");
+  convo.scrollTop = convo.scrollHeight;
+}
+
+function showAll(){
+  clearInterval(timer);
+  paintConvo(TURNS.length-1);
+  paintExt(TURNS.length-1);
+}
+
+function replay(){
+  clearInterval(timer);
+  let i = -1;
+  paintConvo(-1); paintExt(-1);
+  timer = setInterval(() => {
+    i++;
+    if (i >= TURNS.length){ clearInterval(timer); return; }
+    paintConvo(i); paintExt(i);
+  }, 850);
+}
+
+document.getElementById("ledger").innerHTML = LEDGER.map(r => {
+  const missed = r[3] === "No";
+  return `<tr class="${missed?"miss":""}">
+    <td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>
+    <td class="mono">${r[3]}</td><td>${r[4]}</td></tr>`;
+}).join("");
+
+document.getElementById("replay").addEventListener("click", replay);
+
+// At rest the whole call is already on screen. Replay is opt in, so nothing the
+// reader needs is hidden behind an animation they have to wait for.
+showAll();
+</script>
+</body>
+</html>

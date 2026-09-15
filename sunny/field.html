@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Close the job from your phone | Steel Rule Studio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F4F3F0; --card:#FFFFFF; --raised:#EDEBE6; --edge:#DEDAD2;
+    --ink:#1B1E24; --muted:#5E6570; --faint:#8A919B;
+    --accent:#8A5A16; --accent-bg:#F6EEDF;
+    --fault:#A8433A; --fault-bg:#F8E8E6;
+    --ok:#33705A; --ok-bg:#E3F0EA;
+    --info:#2B5F80; --info-bg:#E4EEF5;
+    --shadow:0 1px 2px rgba(20,22,28,.07),0 4px 14px rgba(20,22,28,.05);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#131519; --card:#1B1E24; --raised:#22262D; --edge:#2B3038;
+      --ink:#E7EAEE; --muted:#98A1AC; --faint:#6F7885;
+      --accent:#D9A34E; --accent-bg:#2C2415;
+      --fault:#DE8378; --fault-bg:#35201D;
+      --ok:#6CBE9C; --ok-bg:#16301F;
+      --info:#71AFD4; --info-bg:#152833;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+    }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{
+    background:var(--ground);color:var(--ink);
+    font-family:Barlow,system-ui,-apple-system,Segoe UI,sans-serif;
+    font-size:16px;line-height:1.5;
+  }
+
+  /* ---- demo frame, deliberately separate from the product itself ---- */
+  .frame{background:var(--ink);color:var(--ground);padding:7px 14px;
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;
+    display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;
+    text-align:center;line-height:1.4}
+  .frame b{color:#D9A34E;font-weight:600}
+  .frame span{opacity:.72}
+
+  .shell{max-width:440px;margin:0 auto;padding:0 0 40px}
+
+  /* ---- app chrome ---- */
+  .appbar{position:sticky;top:0;z-index:20;background:var(--card);
+    border-bottom:1px solid var(--edge);padding:13px 18px;
+    display:flex;align-items:center;gap:12px;box-shadow:var(--shadow)}
+  .mark{width:30px;height:30px;border-radius:7px;background:var(--accent);
+    display:grid;place-items:center;flex:none}
+  .mark svg{width:17px;height:17px;display:block}
+  .appbar h1{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em;flex:1}
+  .appbar .who{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint)}
+
+  .daybar{padding:15px 18px 6px}
+  .daybar .d{font-family:"IBM Plex Mono",monospace;font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+  .daybar h2{margin:3px 0 0;font-size:23px;font-weight:700;letter-spacing:-.02em}
+  .daybar p{margin:4px 0 0;color:var(--muted);font-size:14px}
+
+  /* ---- job list ---- */
+  .jobs{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+  .job{background:var(--card);border:1px solid var(--edge);border-radius:12px;
+    box-shadow:var(--shadow);overflow:hidden;width:100%;text-align:left;
+    font-family:inherit;color:inherit;font-size:inherit;cursor:pointer;padding:0}
+  .job:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .job .top{display:flex;gap:11px;padding:13px 14px 11px;align-items:flex-start}
+  .job .time{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    color:var(--muted);padding-top:2px;min-width:52px}
+  .job .body{flex:1;min-width:0}
+  .job .cust{font-weight:600;font-size:16px;letter-spacing:-.01em}
+  .job .addr{color:var(--muted);font-size:13.5px;margin-top:1px}
+  .job .sys{font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+    color:var(--faint);margin-top:5px}
+  .pill{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:10px;
+    letter-spacing:.09em;text-transform:uppercase;font-weight:600;
+    padding:3px 7px;border-radius:5px;white-space:nowrap}
+  .p-fault{background:var(--fault-bg);color:var(--fault)}
+  .p-perf{background:var(--accent-bg);color:var(--accent)}
+  .p-addon{background:var(--info-bg);color:var(--info)}
+  .p-open{background:var(--fault-bg);color:var(--fault)}
+  .p-done{background:var(--ok-bg);color:var(--ok)}
+  .job .foot{border-top:1px solid var(--edge);padding:9px 14px;
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--raised);font-size:13px}
+  .job .foot .st{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted)}
+
+  .carry{border:1px dashed var(--fault);background:var(--fault-bg);
+    border-radius:10px;padding:11px 13px;margin:0 14px;
+    font-size:13.5px;color:var(--fault)}
+  .carry b{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+    letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+
+  /* ---- detail sheet ---- */
+  .sheet{position:fixed;inset:0;z-index:40;background:var(--ground);
+    overflow-y:auto;display:none}
+  .sheet.on{display:block}
+  .sheet .head{position:sticky;top:0;background:var(--card);
+    border-bottom:1px solid var(--edge);padding:12px 14px;display:flex;
+    align-items:center;gap:11px;box-shadow:var(--shadow);z-index:2}
+  .back{border:1px solid var(--edge);background:var(--raised);border-radius:8px;
+    padding:7px 11px;font-family:inherit;font-size:14px;cursor:pointer;color:inherit}
+  .sheet .head .t{font-weight:700;font-size:16px;flex:1;letter-spacing:-.01em}
+  .inner{max-width:440px;margin:0 auto;padding:14px 14px 130px;
+    display:flex;flex-direction:column;gap:12px}
+
+  .block{background:var(--card);border:1px solid var(--edge);border-radius:12px;
+    box-shadow:var(--shadow);overflow:hidden}
+  .block h3{margin:0;padding:11px 14px;font-size:11px;font-family:"IBM Plex Mono",monospace;
+    letter-spacing:.11em;text-transform:uppercase;color:var(--faint);
+    border-bottom:1px solid var(--edge);background:var(--raised);font-weight:600}
+  .kv{display:grid;grid-template-columns:104px 1fr;gap:4px 12px;padding:12px 14px;
+    font-size:14.5px}
+  .kv dt{color:var(--muted);font-size:13px}
+  .kv dd{margin:0;font-weight:500}
+  .kv dd.mono{font-family:"IBM Plex Mono",monospace;font-size:13.5px}
+
+  .steps{padding:6px 0;margin:0;list-style:none}
+  .steps li{display:flex;gap:11px;align-items:flex-start;padding:10px 14px;
+    border-bottom:1px solid var(--edge)}
+  .steps li:last-child{border-bottom:0}
+  .box{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--edge);
+    flex:none;display:grid;place-items:center;cursor:pointer;background:var(--ground);
+    margin-top:1px}
+  .box.on{background:var(--ok);border-color:var(--ok)}
+  .box svg{width:13px;height:13px;stroke:#fff;stroke-width:3;fill:none;
+    display:none}
+  .box.on svg{display:block}
+  .steps .lbl{font-size:14.5px;flex:1}
+  .steps .lbl small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+  .req{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--fault);
+    letter-spacing:.09em;border:1px solid var(--fault);border-radius:4px;
+    padding:1px 5px;margin-top:3px;display:inline-block}
+
+  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 14px}
+  .shot{aspect-ratio:1;border-radius:9px;border:1px solid var(--edge);
+    background:var(--raised);display:grid;place-items:center;position:relative;
+    overflow:hidden}
+  .shot.filled{border-style:solid;border-color:var(--ok)}
+  .shot .ph{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--faint);
+    text-align:center;line-height:1.35;padding:6px}
+  .shot .tick{position:absolute;top:5px;right:5px;width:17px;height:17px;
+    border-radius:50%;background:var(--ok);display:none;place-items:center}
+  .shot.filled .tick{display:grid}
+  .shot .tick svg{width:10px;height:10px;stroke:#fff;stroke-width:3.4;fill:none}
+  .addshot{border:1.5px dashed var(--accent);background:var(--accent-bg);
+    color:var(--accent);font-family:inherit;font-size:13px;cursor:pointer;
+    border-radius:9px;aspect-ratio:1;display:grid;place-items:center;
+    text-align:center;line-height:1.3;padding:6px;font-weight:600}
+
+  textarea{width:calc(100% - 28px);margin:0 14px 14px;padding:11px 12px;
+    border:1px solid var(--edge);border-radius:9px;background:var(--ground);
+    font-family:inherit;font-size:15px;color:inherit;min-height:84px;resize:vertical}
+  textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+
+  /* ---- gate ---- */
+  .gate{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--card);
+    border-top:1px solid var(--edge);padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+    box-shadow:0 -4px 18px rgba(20,22,28,.09)}
+  .gate .in{max-width:440px;margin:0 auto}
+  .gatemsg{font-size:13px;color:var(--muted);margin:0 0 9px;display:flex;
+    gap:7px;align-items:flex-start}
+  .gatemsg b{color:var(--fault);font-weight:600}
+  .submit{width:100%;padding:15px;border-radius:11px;border:0;cursor:pointer;
+    font-family:inherit;font-size:16.5px;font-weight:700;letter-spacing:-.01em;
+    background:var(--ok);color:#fff}
+  .submit[disabled]{background:var(--raised);color:var(--faint);cursor:not-allowed;
+    border:1px solid var(--edge)}
+
+  /* ---- done ---- */
+  .done{padding:22px 16px;text-align:center}
+  .done .big{width:56px;height:56px;border-radius:50%;background:var(--ok);
+    display:grid;place-items:center;margin:0 auto 14px}
+  .done .big svg{width:28px;height:28px;stroke:#fff;stroke-width:3;fill:none}
+  .done h2{margin:0;font-size:22px;letter-spacing:-.02em}
+  .done p{color:var(--muted);margin:6px 0 18px;font-size:14.5px}
+  .fired{text-align:left;background:var(--card);border:1px solid var(--edge);
+    border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .fired div{padding:12px 14px;border-bottom:1px solid var(--edge);display:flex;
+    gap:11px;align-items:flex-start;font-size:14px}
+  .fired div:last-child{border-bottom:0}
+  .fired .ic{width:22px;height:22px;border-radius:6px;background:var(--ok-bg);
+    color:var(--ok);display:grid;place-items:center;flex:none;font-size:12px;
+    font-weight:700;font-family:"IBM Plex Mono",monospace}
+  .fired small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+
+  .foot-note{max-width:440px;margin:0 auto;padding:20px 18px 0;color:var(--muted);
+    font-size:13px;line-height:1.55;border-top:1px solid var(--edge);margin-top:22px}
+  .foot-note b{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="frame">
+  <b>DEMONSTRATION</b>
+  <span>built for Sunny Energy RX by Steel Rule Studio &middot; sample data</span>
+</div>
+
+<div class="shell" id="list-view">
+  <div class="appbar">
+    <div class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"
+      stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.6M12 19.4V22M2 12h2.6M19.4 12H22M4.9 4.9l1.9 1.9M17.2 17.2l1.9 1.9M19.1 4.9l-1.9 1.9M6.8 17.2l-1.9 1.9"/></svg></div>
+    <h1>Sunny Energy RX</h1>
+    <span class="who">D. VERNON</span>
+  </div>
+
+  <div class="daybar">
+    <div class="d">Wednesday 16 September</div>
+    <h2>Your jobs today</h2>
+    <p>Three scheduled. One still open from yesterday.</p>
+  </div>
+
+  <div class="carry">
+    <b>Still open from Tuesday</b>
+    Gonzalez, Sun City West. Diagnostic done, photos never uploaded. It stays here
+    until it is closed out.
+  </div>
+
+  <div class="jobs" id="jobs"></div>
+
+  <div class="foot-note">
+    <b>What this shows.</b> A technician opens one link on their phone. No Zoho
+    login, no app install. Their jobs for the day, the right customer already
+    attached, and the camera one tap away.
+    <br><br>
+    <b>The job cannot be closed until it is documented.</b> Notes and photos are
+    required, and completing them is what releases the job for payment. Yesterday's
+    unfinished work is still sitting at the top of the list rather than having
+    vanished.
+  </div>
+</div>
+
+<!-- ---------------- detail ---------------- -->
+<div class="sheet" id="sheet">
+  <div class="head">
+    <button class="back" id="back">Back</button>
+    <span class="t" id="sheet-title">Job</span>
+  </div>
+  <div class="inner" id="sheet-inner"></div>
+</div>
+
+<div class="gate" id="gate" style="display:none">
+  <div class="in">
+    <p class="gatemsg" id="gatemsg"></p>
+    <button class="submit" id="submit" disabled>Complete job</button>
+  </div>
+</div>
+
+<script>
+const TICK = '<svg viewBox="0 0 24 24"><polyline points="4,13 9,18 20,6"/></svg>';
+
+// Sample jobs only. Nothing here is Sunny Energy RX data; the names, addresses and
+// serials are invented for the demonstration.
+const JOBS = [
+  { id:"j0", carried:true, time:"Tue", cust:"R. Gonzalez", addr:"Sun City West, AZ 85375",
+    sys:"SolarEdge SE7600H  ·  24 panels  ·  PTO 2016",
+    kind:"fault", kindLabel:"Inverter fault", status:"Open, not documented",
+    issue:"Inverter offline. Error 3x97 on display.",
+    found:"Isolation fault on string 2. Suspect damaged conductor at the roof penetration.",
+    steps:[
+      {t:"Photograph the inverter display", s:"Error code has to be legible", req:true},
+      {t:"Photograph the affected string", s:"Wide shot plus the damage", req:true},
+      {t:"Record the fault code and reading", req:true},
+      {t:"Confirm warranty status", s:"SolarEdge, 12 year standard"}
+    ]},
+  { id:"j1", carried:false, time:"08:30", cust:"M. Whitfield", addr:"Surprise, AZ 85374",
+    sys:"SolarEdge SE10000H  ·  32 panels  ·  PTO 2015",
+    kind:"perf", kindLabel:"Production down", status:"Scheduled",
+    issue:"Production down 38% against the same week last year.",
+    found:"",
+    steps:[
+      {t:"Photograph the array", s:"All three strings", req:true},
+      {t:"Record per string output", req:true},
+      {t:"Check for shading or soiling"},
+      {t:"Note the meter reading"}
+    ]},
+  { id:"j2", carried:false, time:"11:15", cust:"D. Brennan", addr:"Peoria, AZ 85383",
+    sys:"SolarEdge SE5000H  ·  18 panels  ·  PTO 2018",
+    kind:"fault", kindLabel:"No production", status:"Scheduled",
+    issue:"System showing zero output since 2 September. Customer noticed on the bill.",
+    found:"",
+    steps:[
+      {t:"Photograph the inverter display", req:true},
+      {t:"Photograph the AC disconnect", req:true},
+      {t:"Record the fault code", req:true}
+    ]},
+  { id:"j3", carried:false, time:"14:00", cust:"L. Okafor", addr:"Goodyear, AZ 85395",
+    sys:"SolarEdge SE7600A  ·  22 panels  ·  PTO 2019",
+    kind:"addon", kindLabel:"Add on quote", status:"Scheduled",
+    issue:"Asking about adding four panels and a battery.",
+    found:"",
+    steps:[
+      {t:"Photograph available roof area", req:true},
+      {t:"Photograph the main panel and breaker space", req:true},
+      {t:"Note the existing interconnection terms"}
+    ]}
+];
+
+const state = {};   // per job: {shots:0, notes:"", checks:Set}
+JOBS.forEach(j => state[j.id] = {shots:0, notes:"", checks:new Set(), done:false});
+
+const KIND = {fault:"p-fault", perf:"p-perf", addon:"p-addon"};
+
+function renderList(){
+  document.getElementById("jobs").innerHTML = JOBS.map(j => {
+    const st = state[j.id];
+    const done = st.done;
+    return `<button class="job" data-id="${j.id}">
+      <div class="top">
+        <span class="time">${j.time}</span>
+        <span class="body">
+          <span class="cust">${j.cust}</span>
+          <div class="addr">${j.addr}</div>
+          <div class="sys">${j.sys}</div>
+        </span>
+        <span class="pill ${KIND[j.kind]}">${j.kindLabel}</span>
+      </div>
+      <div class="foot">
+        <span class="st">${done ? "Closed out" : j.status}</span>
+        <span class="pill ${done ? "p-done" : "p-open"}">${done ? "Complete" : (j.carried ? "Carried over" : "Open")}</span>
+      </div>
+    </button>`;
+  }).join("");
+}
+
+let current = null;
+
+function openJob(id){
+  current = JOBS.find(j => j.id === id);
+  const st = state[current.id];
+  document.getElementById("sheet-title").textContent = current.cust;
+  document.getElementById("sheet-inner").innerHTML = `
+    <div class="block">
+      <h3>The job</h3>
+      <dl class="kv">
+        <dt>Customer</dt><dd>${current.cust}</dd>
+        <dt>Address</dt><dd>${current.addr}</dd>
+        <dt>System</dt><dd class="mono">${current.sys}</dd>
+        <dt>Reported</dt><dd>${current.issue}</dd>
+        ${current.found ? `<dt>Last visit</dt><dd>${current.found}</dd>` : ""}
+      </dl>
+    </div>
+
+    <div class="block">
+      <h3>Before this can be closed</h3>
+      <ul class="steps" id="steps">
+        ${current.steps.map((s,i)=>`
+          <li>
+            <span class="box ${st.checks.has(i)?"on":""}" data-i="${i}" role="checkbox"
+              tabindex="0" aria-checked="${st.checks.has(i)}">${TICK}</span>
+            <span class="lbl">${s.t}
+              ${s.s?`<small>${s.s}</small>`:""}
+              ${s.req?`<span class="req">REQUIRED</span>`:""}
+            </span>
+          </li>`).join("")}
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3>Photos</h3>
+      <div class="shots" id="shots"></div>
+    </div>
+
+    <div class="block">
+      <h3>Technician notes</h3>
+      <textarea id="notes" placeholder="What you found, what you did, what it needs next.">${st.notes}</textarea>
+    </div>`;
+
+  renderShots();
+  document.getElementById("sheet").classList.add("on");
+  document.getElementById("gate").style.display = "block";
+  window.scrollTo(0,0);
+  refreshGate();
+}
+
+function renderShots(){
+  const st = state[current.id];
+  const cells = [];
+  for (let i=0;i<st.shots;i++){
+    cells.push(`<div class="shot filled">
+      <span class="ph">IMG_${(4821+i)}<br>just now</span>
+      <span class="tick">${TICK}</span></div>`);
+  }
+  cells.push(`<button class="addshot" id="addshot">+ Add<br>photo</button>`);
+  while (cells.length < 3) cells.push(`<div class="shot"><span class="ph">empty</span></div>`);
+  document.getElementById("shots").innerHTML = cells.join("");
+}
+
+function refreshGate(){
+  const st = state[current.id];
+  const need = current.steps.map((s,i)=>({s,i})).filter(o=>o.s.req);
+  const missing = [];
+  const openReq = need.filter(o=>!st.checks.has(o.i)).length;
+  if (openReq) missing.push(openReq + " required step" + (openReq>1?"s":""));
+  if (st.shots < 2) missing.push((2-st.shots) + " more photo" + ((2-st.shots)>1?"s":""));
+  if (st.notes.trim().length < 12) missing.push("technician notes");
+
+  const btn = document.getElementById("submit");
+  const msg = document.getElementById("gatemsg");
+  if (missing.length){
+    btn.disabled = true;
+    msg.innerHTML = `<b>Not yet.</b> Still needs ${missing.join(", ")}.`;
+  } else {
+    btn.disabled = false;
+    msg.innerHTML = `Documented. Closing this releases it for payment.`;
+  }
+}
+
+function complete(){
+  const st = state[current.id];
+  st.done = true;
+  document.getElementById("gate").style.display = "none";
+  document.getElementById("sheet-inner").innerHTML = `
+    <div class="done">
+      <div class="big">${TICK}</div>
+      <h2>Job closed out</h2>
+      <p>${current.cust} &middot; ${current.addr}</p>
+      <div class="fired">
+        <div><span class="ic">1</span><span>Written back to Zoho FSM
+          <small>Work order updated, photos and notes attached to the customer record</small></span></div>
+        <div><span class="ic">2</span><span>Invoice raised
+          <small>Line items matched against the price book, sent for approval</small></span></div>
+        <div><span class="ic">3</span><span>Review request queued
+          <small>Texts the customer tomorrow morning with a one tap Google link</small></span></div>
+        <div><span class="ic">4</span><span>Released for payment
+          <small>Logged against this technician for the pay period</small></span></div>
+      </div>
+    </div>`;
+  window.scrollTo(0,0);
+}
+
+document.addEventListener("click", e => {
+  const j = e.target.closest(".job");
+  if (j){ openJob(j.dataset.id); return; }
+
+  if (e.target.closest("#back")){
+    document.getElementById("sheet").classList.remove("on");
+    document.getElementById("gate").style.display = "none";
+    renderList();
+    return;
+  }
+  const box = e.target.closest(".box");
+  if (box){
+    const st = state[current.id], i = Number(box.dataset.i);
+    if (st.checks.has(i)) st.checks.delete(i); else st.checks.add(i);
+    box.classList.toggle("on");
+    box.setAttribute("aria-checked", st.checks.has(i));
+    refreshGate();
+    return;
+  }
+  if (e.target.closest("#addshot")){
+    const st = state[current.id];
+    if (st.shots < 6) st.shots++;
+    renderShots(); refreshGate();
+    return;
+  }
+  if (e.target.closest("#submit") && !document.getElementById("submit").disabled){
+    complete();
+  }
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === " " || e.key === "Enter"){
+    const box = e.target.closest(".box");
+    if (box){ e.preventDefault(); box.click(); }
+  }
+});
+
+document.addEventListener("input", e => {
+  if (e.target.id === "notes"){
+    state[current.id].notes = e.target.value;
+    refreshGate();
+  }
+});
+
+renderList();
+</script>
+</body>
+</html>

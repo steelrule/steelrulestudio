@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>From alert to booked, without anyone retyping it | Steel Rule Studio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --ground:#F4F3F0; --card:#FFFFFF; --raised:#EDEBE6; --edge:#DEDAD2;
+    --ink:#1B1E24; --muted:#5E6570; --faint:#8A919B;
+    --accent:#8A5A16; --accent-bg:#F6EEDF;
+    --fault:#A8433A; --fault-bg:#F8E8E6;
+    --ok:#33705A; --ok-bg:#E3F0EA;
+    --info:#2B5F80; --info-bg:#E4EEF5;
+    --shadow:0 1px 2px rgba(20,22,28,.07),0 4px 14px rgba(20,22,28,.05);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#131519; --card:#1B1E24; --raised:#22262D; --edge:#2B3038;
+      --ink:#E7EAEE; --muted:#98A1AC; --faint:#6F7885;
+      --accent:#D9A34E; --accent-bg:#2C2415;
+      --fault:#DE8378; --fault-bg:#35201D;
+      --ok:#6CBE9C; --ok-bg:#16301F;
+      --info:#71AFD4; --info-bg:#152833;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--ground);color:var(--ink);
+    font-family:Barlow,system-ui,-apple-system,Segoe UI,sans-serif;
+    font-size:16px;line-height:1.55}
+  .frame{background:var(--ink);color:var(--ground);padding:7px 14px;
+    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;text-align:center;line-height:1.4}
+  .frame b{color:#D9A34E;font-weight:600}
+  .frame span{opacity:.72}
+
+  .wrap{max-width:940px;margin:0 auto;padding:30px 20px 70px;
+    display:flex;flex-direction:column;gap:26px}
+  .kick{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);font-weight:600}
+  h1{margin:7px 0 0;font-size:clamp(27px,4.3vw,40px);font-weight:700;
+    letter-spacing:-.025em;line-height:1.05;text-wrap:balance}
+  .lede{color:var(--muted);margin:11px 0 0;max-width:62ch;font-size:16.5px}
+  h2{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--faint);margin:0 0 14px;font-weight:600}
+
+  /* ---- the alert itself ---- */
+  .alert{background:var(--card);border:1px solid var(--edge);border-left:4px solid var(--fault);
+    border-radius:11px;box-shadow:var(--shadow);overflow:hidden}
+  .alert .top{padding:14px 18px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
+  .alert .src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--fault);background:var(--fault-bg);
+    padding:3px 8px;border-radius:5px;font-weight:600;white-space:nowrap}
+  .alert .h{flex:1;min-width:210px}
+  .alert .h b{display:block;font-size:17.5px;letter-spacing:-.015em}
+  .alert .h span{color:var(--muted);font-size:14px}
+  .alert .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+    border-top:1px solid var(--edge)}
+  .alert .g{padding:12px 18px;border-right:1px solid var(--edge)}
+  .alert .g:last-child{border-right:0}
+  .alert .g i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+  .alert .g b{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:600;
+    font-variant-numeric:tabular-nums;display:block;margin-top:3px}
+
+  /* ---- before / after ---- */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+  @media (max-width:760px){.two{grid-template-columns:1fr}}
+  .col{background:var(--card);border:1px solid var(--edge);border-radius:11px;
+    box-shadow:var(--shadow);overflow:hidden}
+  .col > .ch{padding:12px 16px;border-bottom:1px solid var(--edge);background:var(--raised)}
+  .col > .ch .t{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint);font-weight:600}
+  .col > .ch .n{font-size:16.5px;font-weight:600;letter-spacing:-.01em;margin-top:2px}
+  .col.now > .ch{background:var(--fault-bg)}
+  .col.now > .ch .t,.col.now > .ch .n{color:var(--fault)}
+  .col.next > .ch{background:var(--ok-bg)}
+  .col.next > .ch .t,.col.next > .ch .n{color:var(--ok)}
+  ol.flow{list-style:none;margin:0;padding:0}
+  ol.flow li{display:grid;grid-template-columns:24px 1fr;gap:11px;padding:11px 16px;
+    border-bottom:1px solid var(--edge);font-size:14.5px;align-items:start}
+  ol.flow li:last-child{border-bottom:0}
+  ol.flow .n{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);
+    padding-top:3px;font-weight:600}
+  ol.flow .x{color:var(--fault);font-weight:700;font-size:13px}
+  ol.flow small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+  .tally{padding:12px 16px;background:var(--raised);border-top:1px solid var(--edge);
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;display:flex;
+    justify-content:space-between;gap:10px;flex-wrap:wrap}
+  .tally b{font-weight:600}
+  .col.now .tally b{color:var(--fault)}
+  .col.next .tally b{color:var(--ok)}
+
+  /* ---- phone ---- */
+  .phone{max-width:330px;margin:0 auto;border:9px solid var(--ink);border-radius:30px;
+    overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+  .phone .bar{background:var(--raised);padding:9px 14px;border-bottom:1px solid var(--edge);
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);text-align:center}
+  .thread{padding:14px;display:flex;flex-direction:column;gap:9px}
+  .msg{padding:10px 13px;border-radius:15px;font-size:14px;line-height:1.45;max-width:88%}
+  .msg.in{background:var(--raised);border:1px solid var(--edge);align-self:flex-start;
+    border-bottom-left-radius:4px}
+  .msg.out{background:var(--info-bg);border:1px solid var(--info);align-self:flex-end;
+    border-bottom-right-radius:4px}
+  .slots{display:flex;flex-direction:column;gap:7px;margin-top:9px}
+  .slot{border:1px solid var(--edge);background:var(--card);border-radius:9px;
+    padding:9px 12px;font-family:inherit;font-size:13.5px;cursor:pointer;color:inherit;
+    text-align:left;display:flex;justify-content:space-between;gap:9px;align-items:center}
+  .slot:hover{border-color:var(--accent);background:var(--accent-bg)}
+  .slot:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .slot.picked{border-color:var(--ok);background:var(--ok-bg);color:var(--ok);font-weight:600}
+  .slot .tick{display:none}
+  .slot.picked .tick{display:inline}
+  .hint{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11px;
+    color:var(--faint);margin-top:11px}
+
+  .lands{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+  .land{background:var(--card);border:1px solid var(--edge);border-radius:11px;
+    padding:15px 17px;box-shadow:var(--shadow);position:relative;
+    transition:border-color .3s}
+  .land.on{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok),var(--shadow)}
+  .land .done{position:absolute;top:13px;right:15px;width:19px;height:19px;
+    border-radius:50%;background:var(--ok);color:#fff;display:none;
+    place-items:center;font-size:11px;font-weight:700}
+  .land.on .done{display:grid}
+  .land .t{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .land .m{font-weight:600;font-size:15.5px;letter-spacing:-.01em}
+  .land p{margin:5px 0 0;font-size:13.5px;color:var(--muted)}
+
+  .note{color:var(--muted);font-size:14px;max-width:66ch}
+  .note b{color:var(--ink)}
+  footer{border-top:1px solid var(--edge);padding-top:18px;color:var(--muted);font-size:13.5px}
+  footer b{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="frame"><b>DEMONSTRATION</b>
+  <span>built for Sunny Energy RX by Steel Rule Studio &middot; sample data</span></div>
+
+<div class="wrap">
+
+<header>
+  <div class="kick">Workstream two &middot; scheduling</div>
+  <h1>From alert to booked, without anyone retyping it</h1>
+  <p class="lede">My Solar Rx already finds the fault before the customer does. The
+  gap is what happens next: today that becomes a notification somebody has to chase.
+  This turns it into a booked job while the office is asleep.</p>
+</header>
+
+<section>
+  <h2>What My Solar Rx already caught</h2>
+  <div class="alert">
+    <div class="top">
+      <span class="src">Alert</span>
+      <span class="h">
+        <b>M. Whitfield, Surprise AZ</b>
+        <span>SolarEdge SE10000H &middot; 32 panels &middot; PTO 2015</span>
+      </span>
+    </div>
+    <div class="grid">
+      <div class="g"><i>Detected</i><b>11 days ago</b></div>
+      <div class="g"><i>Output</i><b>0 kWh</b></div>
+      <div class="g"><i>Expected</i><b>47 kWh/day</b></div>
+      <div class="g"><i>Lost so far</i><b>517 kWh</b></div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:12px">This is the part you already built, and it
+  is the hard part. The inverter makers do not alert well, which is why a customer
+  can sit dark for a month and find out from a utility bill. You are ahead of that
+  already. <b>The value is leaking after the alert, not before it.</b></p>
+</section>
+
+<section>
+  <h2>The two paths</h2>
+  <div class="two">
+    <div class="col now">
+      <div class="ch"><div class="t">As you described it</div>
+        <div class="n">Today</div></div>
+      <ol class="flow">
+        <li><span class="n">1</span><span>Alert fires, office gets a notification</span></li>
+        <li><span class="n">2</span><span>Someone notices it in the queue<small>Whenever somebody next looks</small></span></li>
+        <li><span class="n">3</span><span>Someone calls the customer<small>Who may not pick up</small></span></li>
+        <li><span class="n">4</span><span>Agree a time by phone or voicemail tag</span></li>
+        <li><span class="n">5</span><span>Enter the job in Zoho FSM</span></li>
+        <li><span class="x">6</span><span>Retype it into TeamUp by hand<small>"Probably not the most efficient, but it's what we're doing right now"</small></span></li>
+      </ol>
+      <div class="tally"><span>Human touches</span><b>5</b></div>
+    </div>
+
+    <div class="col next">
+      <div class="ch"><div class="t">What this shows</div>
+        <div class="n">Instead</div></div>
+      <ol class="flow">
+        <li><span class="n">1</span><span>Alert fires</span></li>
+        <li><span class="n">2</span><span>Customer is texted with real open slots<small>Pulled from the live schedule, not a guess</small></span></li>
+        <li><span class="n">3</span><span>They tap one<small>At 9pm, on the sofa, no phone tag</small></span></li>
+        <li><span class="n">4</span><span>Written once, to both the job record and the calendar</span></li>
+      </ol>
+      <div class="tally"><span>Human touches</span><b>0</b></div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:12px">A person still steps in the moment anything
+  is unusual. What goes away is the ordinary case, which is most of them.</p>
+</section>
+
+<section>
+  <h2>What the customer sees. Try it.</h2>
+  <div class="phone">
+    <div class="bar">Messages &middot; Sunny Energy RX</div>
+    <div class="thread">
+      <div class="msg in">
+        Sunny Energy RX here. Your system has not produced since 4 September and we
+        think it needs a look. That is about 517 kWh so far.
+      </div>
+      <div class="msg in">
+        We can come out. Pick whichever suits:
+        <div class="slots" id="slots">
+          <button class="slot" data-s="Thu 18 Sep, 8 to 11am">Thu 18 Sep, 8 to 11am <span class="tick">&#10003;</span></button>
+          <button class="slot" data-s="Fri 19 Sep, 1 to 4pm">Fri 19 Sep, 1 to 4pm <span class="tick">&#10003;</span></button>
+          <button class="slot" data-s="Mon 22 Sep, 8 to 11am">Mon 22 Sep, 8 to 11am <span class="tick">&#10003;</span></button>
+        </div>
+      </div>
+      <div id="reply"></div>
+    </div>
+  </div>
+  <p class="hint" id="hint">Tap a slot</p>
+</section>
+
+<section>
+  <h2>Where it lands</h2>
+  <div class="lands">
+    <div class="land" id="l1"><span class="done">&#10003;</span>
+      <div class="t">Zoho FSM</div>
+      <div class="m">Work order created</div>
+      <p>Customer, system and the fault history already attached. Nobody types it in.</p>
+    </div>
+    <div class="land" id="l2"><span class="done">&#10003;</span>
+      <div class="t">The schedule</div>
+      <div class="m">Same entry, once</div>
+      <p>The double entry is the thing that goes away, whether the calendar stays
+      TeamUp or not.</p>
+    </div>
+    <div class="land" id="l3"><span class="done">&#10003;</span>
+      <div class="t">The technician</div>
+      <div class="m">Shows up on their phone</div>
+      <p>Straight onto the job list, with the fault already written down.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <b>What this is.</b> A demonstration of the flow, built from what you described on
+  the call. It is not connected to My Solar Rx, Zoho FSM or TeamUp yet, and the
+  customer here is invented. The real work is those three connections, which is what
+  the estimate covers.
+</footer>
+
+</div>
+
+<script>
+const slots = document.getElementById("slots");
+const reply = document.getElementById("reply");
+const hint  = document.getElementById("hint");
+
+slots.addEventListener("click", e => {
+  const b = e.target.closest(".slot");
+  if (!b) return;
+  [...slots.children].forEach(s => s.classList.remove("picked"));
+  b.classList.add("picked");
+  const when = b.dataset.s;
+
+  reply.innerHTML =
+    `<div class="msg out">${when}</div>
+     <div class="msg in">Booked, ${when}. A technician will text when they are on
+     the way. Reply R if you need to move it.</div>`;
+  hint.textContent = "Written once. Nobody in the office touched it.";
+
+  ["l1","l2","l3"].forEach((id,i) =>
+    setTimeout(() => document.getElementById(id).classList.add("on"), 260 + i*260));
+});
+</script>
+</body>
+</html>
