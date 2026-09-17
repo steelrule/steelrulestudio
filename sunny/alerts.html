@@ -1,290 +1,435 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>From alert to booked, without anyone retyping it | Steel Rule Studio</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<title>Sunny Energy Scheduling | Steel Rule Studio</title>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
   :root{
-    --ground:#F4F3F0; --card:#FFFFFF; --raised:#EDEBE6; --edge:#DEDAD2;
-    --ink:#1B1E24; --muted:#5E6570; --faint:#8A919B;
-    --accent:#8A5A16; --accent-bg:#F6EEDF;
-    --fault:#A8433A; --fault-bg:#F8E8E6;
-    --ok:#33705A; --ok-bg:#E3F0EA;
-    --info:#2B5F80; --info-bg:#E4EEF5;
-    --shadow:0 1px 2px rgba(20,22,28,.07),0 4px 14px rgba(20,22,28,.05);
+    --navy:#1B365D; --blue:#2B7BD6; --gold:#F2B01E;
+    --ground:#F5F8FC; --surface:#FFFFFF; --raised:#EEF3F9; --sunk:#E4EBF3;
+    --ink:#142033; --muted:#5B6B80; --faint:#8C9AAD;
+    --line:#D8E0EA; --line-soft:#E7EDF4;
+    --ok:#1F8A5B; --ok-soft:#E3F3EA; --alert:#D14343; --alert-soft:#FBE7E7;
+    --agent:#E8F1FC; --agent-ink:#1B365D; --bezel:#101826; --bezel-edge:#2A3546;
+    --shadow:0 22px 50px -22px rgba(10,20,40,.45);
+    /* My Solar Rx app colors, sampled from their app screens on mysolarrx.com. The app is light in every theme. */
+    --app-orange:#E8792E; --app-orange-deep:#EE7008; --app-orange-soft:#FDF1E6;
+    --app-green:#4FA878; --app-green-soft:#E8F0E8; --app-red:#D9534F;
+    --app-ground:#F0F4F6; --app-card:#FFFFFF; --app-ink:#1B1E24; --app-muted:#6B7280; --app-line:#E3E7EB;
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){
-      --ground:#131519; --card:#1B1E24; --raised:#22262D; --edge:#2B3038;
-      --ink:#E7EAEE; --muted:#98A1AC; --faint:#6F7885;
-      --accent:#D9A34E; --accent-bg:#2C2415;
-      --fault:#DE8378; --fault-bg:#35201D;
-      --ok:#6CBE9C; --ok-bg:#16301F;
-      --info:#71AFD4; --info-bg:#152833;
-      --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+      --navy:#8DBAEE; --blue:#5FA3F0; --gold:#F2B01E;
+      --ground:#0E141C; --surface:#161E29; --raised:#1C2632; --sunk:#121922;
+      --ink:#E6EDF5; --muted:#93A3B6; --faint:#6E7E92;
+      --line:#273240; --line-soft:#1F2936;
+      --ok:#4FC28A; --ok-soft:#153224; --alert:#F08383; --alert-soft:#3A1F1F;
+      --agent:#1D3450; --agent-ink:#DCE9F8; --bezel:#05080D; --bezel-edge:#1A2330;
+      --shadow:0 22px 50px -22px rgba(0,0,0,.7);
     }
   }
+  :root[data-theme="dark"]{
+    --navy:#8DBAEE; --blue:#5FA3F0; --gold:#F2B01E;
+    --ground:#0E141C; --surface:#161E29; --raised:#1C2632; --sunk:#121922;
+    --ink:#E6EDF5; --muted:#93A3B6; --faint:#6E7E92;
+    --line:#273240; --line-soft:#1F2936;
+    --ok:#4FC28A; --ok-soft:#153224; --alert:#F08383; --alert-soft:#3A1F1F;
+    --agent:#1D3450; --agent-ink:#DCE9F8; --bezel:#05080D; --bezel-edge:#1A2330;
+    --shadow:0 22px 50px -22px rgba(0,0,0,.7);
+  }
   *{box-sizing:border-box}
-  html,body{margin:0}
-  body{background:var(--ground);color:var(--ink);
-    font-family:Barlow,system-ui,-apple-system,Segoe UI,sans-serif;
-    font-size:16px;line-height:1.55}
-  .frame{background:var(--ink);color:var(--ground);padding:7px 14px;
-    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;
-    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;text-align:center;line-height:1.4}
-  .frame b{color:#D9A34E;font-weight:600}
-  .frame span{opacity:.72}
+  body{background:var(--ground);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:16px;line-height:1.55;padding-block:32px 90px;padding-inline:20px;margin:0}
+  .wrap{max-width:940px;margin:0 auto;display:flex;flex-direction:column;gap:52px}
+  header{display:flex;flex-direction:column;gap:14px}
+  .logo{width:150px;background:#fff;padding:9px 12px;border-radius:9px;display:block;box-shadow:0 1px 0 rgba(20,32,51,.06)}
+  .kicker{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:600}
+  h1{font-weight:800;font-size:clamp(30px,5vw,44px);line-height:1.05;letter-spacing:-.025em;margin:0;text-wrap:balance}
+  .sub{color:var(--muted);font-size:17px;margin:0;max-width:60ch}
 
-  .wrap{max-width:940px;margin:0 auto;padding:30px 20px 70px;
-    display:flex;flex-direction:column;gap:26px}
-  .kick{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--accent);font-weight:600}
-  h1{margin:7px 0 0;font-size:clamp(27px,4.3vw,40px);font-weight:700;
-    letter-spacing:-.025em;line-height:1.05;text-wrap:balance}
-  .lede{color:var(--muted);margin:11px 0 0;max-width:62ch;font-size:16.5px}
-  h2{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.15em;
-    text-transform:uppercase;color:var(--faint);margin:0 0 14px;font-weight:600}
+  .tag{display:inline-block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:10px}
+  .tag.gold{color:#1B365D;background:var(--gold);padding:4px 11px;border-radius:999px}
+  h2{font-size:clamp(22px,3vw,28px);font-weight:800;letter-spacing:-.02em;margin:0 0 8px;line-height:1.15;text-wrap:balance}
+  .lede{margin:0 0 18px;color:var(--muted);max-width:64ch}
+  .cap{max-width:64ch;margin-top:16px}
+  .cap p{margin:0;color:var(--muted);font-size:15.5px}
+  .cap p+p{margin-top:8px}
+  .cap b,.lede b,.sub b{color:var(--ink);font-weight:600}
 
-  /* ---- the alert itself ---- */
-  .alert{background:var(--card);border:1px solid var(--edge);border-left:4px solid var(--fault);
-    border-radius:11px;box-shadow:var(--shadow);overflow:hidden}
-  .alert .top{padding:14px 18px;display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap}
-  .alert .src{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--fault);background:var(--fault-bg);
-    padding:3px 8px;border-radius:5px;font-weight:600;white-space:nowrap}
-  .alert .h{flex:1;min-width:210px}
-  .alert .h b{display:block;font-size:17.5px;letter-spacing:-.015em}
-  .alert .h span{color:var(--muted);font-size:14px}
-  .alert .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    border-top:1px solid var(--edge)}
-  .alert .g{padding:12px 18px;border-right:1px solid var(--edge)}
-  .alert .g:last-child{border-right:0}
-  .alert .g i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;
-    font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
-  .alert .g b{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:600;
-    font-variant-numeric:tabular-nums;display:block;margin-top:3px}
+  /* today versus with this */
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:700px){.cmp{grid-template-columns:1fr}}
+  .col{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+  .col.now{border-top:4px solid var(--blue)}
+  .col h3{margin:0 0 4px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .col.now h3{color:var(--blue)}
+  .st{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;font-size:15px;line-height:1.45}
+  .st i{width:24px;height:24px;border-radius:50%;background:var(--sunk);color:var(--muted);font-style:normal;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .col.now .st i{background:var(--agent);color:var(--navy)}
+  .st span b{color:var(--ink);font-weight:600}
+  .st small{display:block;color:var(--faint);font-size:12.5px;margin-top:2px}
+  .tally{margin-top:auto;border-top:1px solid var(--line-soft);padding-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tally b{display:block;font-size:26px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+  .tally span{font-size:12.5px;color:var(--muted)}
+  .col.now .tally b{color:var(--ok)}
 
-  /* ---- before / after ---- */
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-  @media (max-width:760px){.two{grid-template-columns:1fr}}
-  .col{background:var(--card);border:1px solid var(--edge);border-radius:11px;
-    box-shadow:var(--shadow);overflow:hidden}
-  .col > .ch{padding:12px 16px;border-bottom:1px solid var(--edge);background:var(--raised)}
-  .col > .ch .t{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--faint);font-weight:600}
-  .col > .ch .n{font-size:16.5px;font-weight:600;letter-spacing:-.01em;margin-top:2px}
-  .col.now > .ch{background:var(--fault-bg)}
-  .col.now > .ch .t,.col.now > .ch .n{color:var(--fault)}
-  .col.next > .ch{background:var(--ok-bg)}
-  .col.next > .ch .t,.col.next > .ch .n{color:var(--ok)}
-  ol.flow{list-style:none;margin:0;padding:0}
-  ol.flow li{display:grid;grid-template-columns:24px 1fr;gap:11px;padding:11px 16px;
-    border-bottom:1px solid var(--edge);font-size:14.5px;align-items:start}
-  ol.flow li:last-child{border-bottom:0}
-  ol.flow .n{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);
-    padding-top:3px;font-weight:600}
-  ol.flow .x{color:var(--fault);font-weight:700;font-size:13px}
-  ol.flow small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
-  .tally{padding:12px 16px;background:var(--raised);border-top:1px solid var(--edge);
-    font-family:"IBM Plex Mono",monospace;font-size:12.5px;display:flex;
-    justify-content:space-between;gap:10px;flex-wrap:wrap}
-  .tally b{font-weight:600}
-  .col.now .tally b{color:var(--fault)}
-  .col.next .tally b{color:var(--ok)}
+  /* phones */
+  .phones{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+  @media (max-width:700px){.phones{grid-template-columns:1fr}}
+  .pcol{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+  .plabel{font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+  .plabel.new{color:var(--ok)}
+  .phone{width:290px;max-width:100%;background:var(--bezel);border-radius:42px;padding:11px;box-shadow:var(--shadow),inset 0 0 0 1.5px var(--bezel-edge)}
+  .screen{background:var(--surface);border-radius:32px;overflow:hidden;position:relative;min-height:560px;display:flex;flex-direction:column;font-size:13.5px}
+  .island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:94px;height:27px;background:var(--bezel);border-radius:14px;z-index:2}
+  .sbar{display:flex;justify-content:space-between;padding:14px 22px 0;font-size:12px;font-weight:600;color:var(--ink)}
 
-  /* ---- phone ---- */
-  .phone{max-width:330px;margin:0 auto;border:9px solid var(--ink);border-radius:30px;
-    overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
-  .phone .bar{background:var(--raised);padding:9px 14px;border-bottom:1px solid var(--edge);
-    font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);text-align:center}
-  .thread{padding:14px;display:flex;flex-direction:column;gap:9px}
-  .msg{padding:10px 13px;border-radius:15px;font-size:14px;line-height:1.45;max-width:88%}
-  .msg.in{background:var(--raised);border:1px solid var(--edge);align-self:flex-start;
-    border-bottom-left-radius:4px}
-  .msg.out{background:var(--info-bg);border:1px solid var(--info);align-self:flex-end;
-    border-bottom-right-radius:4px}
-  .slots{display:flex;flex-direction:column;gap:7px;margin-top:9px}
-  .slot{border:1px solid var(--edge);background:var(--card);border-radius:9px;
-    padding:9px 12px;font-family:inherit;font-size:13.5px;cursor:pointer;color:inherit;
-    text-align:left;display:flex;justify-content:space-between;gap:9px;align-items:center}
-  .slot:hover{border-color:var(--accent);background:var(--accent-bg)}
-  .slot:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-  .slot.picked{border-color:var(--ok);background:var(--ok-bg);color:var(--ok);font-weight:600}
-  .slot .tick{display:none}
-  .slot.picked .tick{display:inline}
-  .hint{text-align:center;font-family:"IBM Plex Mono",monospace;font-size:11px;
-    color:var(--faint);margin-top:11px}
+  /* their app, drawn light in every theme */
+  .screen.app{background:var(--app-ground);color:var(--app-ink)}
+  .screen.app .sbar{color:#fff;background:var(--app-orange);padding-bottom:6px}
+  .ahead{background:var(--app-orange);color:#fff;padding:8px 14px 12px;display:flex;align-items:center;justify-content:space-between}
+  .ahead .t{font-weight:700;font-size:14px}
+  .ahead .svc{background:#fff;color:var(--app-orange);font-weight:700;font-size:10.5px;border-radius:999px;padding:3px 9px}
+  .abody{padding:10px 10px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .acard{background:var(--app-card);border-radius:12px;padding:10px 12px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+  .acard .k{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--app-orange);font-weight:700}
+  .acard .big{font-weight:800;font-size:16px;color:var(--app-ink);letter-spacing:-.01em}
+  .attn{display:flex;align-items:center;justify-content:space-between}
+  .ring{width:40px;height:40px;border-radius:50%;border:3px solid var(--app-orange-deep);background:var(--app-orange-soft);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--app-orange-deep)}
+  .tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+  .tiles div{background:var(--app-card);border-radius:10px;padding:8px 4px;text-align:center;font-size:9.5px;color:var(--app-muted)}
+  .tiles b{display:block;font-size:12.5px;color:var(--app-orange);margin-bottom:1px}
+  .tiles .g b{color:var(--app-green)}
+  .tiles .r b{color:var(--app-red)}
+  .req{background:var(--app-card);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .req .h{font-weight:800;font-size:14px;color:var(--app-ink)}
+  .req .n{font-size:11.5px;color:var(--app-muted);line-height:1.4}
+  .req .lbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--app-muted);font-weight:700;margin-top:2px}
+  .req .field{border:1px solid var(--app-line);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--app-ink);background:#fff}
+  .req .field.empty{color:var(--app-muted)}
+  .abtn{margin-top:auto;background:var(--app-orange);color:#fff;text-align:center;font-weight:700;padding:11px;border-radius:10px;font-size:12.5px}
+  .win{display:flex;justify-content:space-between;align-items:center;border:1.5px solid var(--app-line);border-radius:9px;padding:9px 10px;font-size:12px;color:var(--app-ink);background:#fff;line-height:1.3}
+  .win small{color:var(--app-muted);font-size:10.5px}
+  .win.sel{border-color:var(--app-orange-deep);background:var(--app-orange-soft)}
+  .win .chk{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--app-line);display:inline-block;flex:none}
+  .win.sel .chk{background:var(--app-orange-deep);border-color:var(--app-orange-deep)}
 
-  .lands{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
-  .land{background:var(--card);border:1px solid var(--edge);border-radius:11px;
-    padding:15px 17px;box-shadow:var(--shadow);position:relative;
-    transition:border-color .3s}
-  .land.on{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok),var(--shadow)}
-  .land .done{position:absolute;top:13px;right:15px;width:19px;height:19px;
-    border-radius:50%;background:var(--ok);color:#fff;display:none;
-    place-items:center;font-size:11px;font-weight:700}
-  .land.on .done{display:grid}
-  .land .t{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--faint);margin-bottom:6px}
-  .land .m{font-weight:600;font-size:15.5px;letter-spacing:-.01em}
-  .land p{margin:5px 0 0;font-size:13.5px;color:var(--muted)}
+  /* texts phone */
+  .apphead{padding:16px 16px 10px;border-bottom:1px solid var(--line-soft);display:flex;align-items:center;gap:10px}
+  .apphead .av{width:32px;height:32px;border-radius:50%;background:var(--agent);color:var(--navy);font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+  .apphead .who{font-weight:700;font-size:14.5px}
+  .apphead .meta{font-size:11.5px;color:var(--faint)}
+  .sms{padding:14px 12px;display:flex;flex-direction:column;gap:9px;flex:1}
+  .sms .from{text-align:center;color:var(--faint);font-size:11px}
+  .sms .msg{background:var(--raised);padding:9px 12px;border-radius:16px;border-bottom-left-radius:5px;max-width:92%;font-size:12.5px;line-height:1.42}
+  .sms .msg.me{align-self:flex-end;background:var(--blue);color:#fff;border-radius:16px;border-bottom-right-radius:5px}
+  .sms .msg a{color:var(--blue);text-decoration:none;font-weight:600}
+  .sms .t{color:var(--faint);font-size:10.5px;padding-left:4px}
 
-  .note{color:var(--muted);font-size:14px;max-width:66ch}
-  .note b{color:var(--ink)}
-  footer{border-top:1px solid var(--edge);padding-top:18px;color:var(--muted);font-size:13.5px}
-  footer b{color:var(--ink)}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  /* windows and calendar */
+  .window{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow);width:100%}
+  .bar{height:36px;background:var(--raised);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:6px;padding:0 12px}
+  .bar i{width:10px;height:10px;border-radius:50%;background:var(--line);display:inline-block}
+  .bar span{margin-left:10px;font-size:12px;color:var(--faint)}
+  .pane{padding:16px 18px}
+  .calwrap{overflow-x:auto}
+  .cal{display:grid;grid-template-columns:70px repeat(5,1fr);gap:6px;font-size:12.5px;min-width:560px}
+  .cal .h{text-align:center;font-weight:700;font-size:12px;padding-bottom:4px;color:var(--muted)}
+  .cal .h small{display:block;font-weight:500;color:var(--faint)}
+  .cal .h.today{color:var(--blue)}
+  .cal .tm{font-size:11px;color:var(--faint);padding-top:8px;line-height:1.3}
+  .cal .c{min-height:64px;border:1px solid var(--line-soft);border-radius:8px;padding:5px 7px;background:var(--surface)}
+  .cal .c.open{border:1.5px dashed var(--blue);background:var(--agent);display:flex;align-items:center;justify-content:center}
+  .cal .c.open span{font-size:11px;color:var(--blue);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .cal .ev{background:var(--raised);border-radius:6px;padding:4px 6px;font-size:11.5px;line-height:1.3;color:var(--ink)}
+  .cal .ev b{display:block;font-weight:700}
+  .cal .ev.new{background:var(--ok-soft);color:var(--ok);box-shadow:inset 0 0 0 1.5px var(--ok)}
+  .cal .ev.new b{color:var(--ok)}
+
+  /* one booking, three places */
+  .three{display:grid;grid-template-columns:150px 1fr 1fr 1fr;gap:12px;align-items:stretch;margin-bottom:16px}
+  @media (max-width:760px){.three{grid-template-columns:1fr}}
+  .src{background:var(--navy);color:#fff;border-radius:12px;padding:14px;display:flex;flex-direction:column;justify-content:center}
+  .src b{font-size:15px}
+  .src span{font-size:12px;opacity:.85;margin-top:3px}
+  .dst{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;position:relative}
+  .dst b{display:block;font-size:14.5px;margin-bottom:3px}
+  .dst p{margin:0;font-size:13px;color:var(--muted)}
+  .dst::before{content:"";position:absolute;left:-13px;top:50%;width:12px;height:2px;background:var(--line)}
+  @media (max-width:760px){.dst::before{display:none}}
+  .rechead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .rechead .id{font-weight:800;font-size:15px}
+  .pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:99px;white-space:nowrap}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.src{background:var(--agent);color:var(--agent-ink)}
+  .rec{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+  @media (max-width:700px){.rec{grid-template-columns:1fr}}
+  .rec .f{display:grid;grid-template-columns:118px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px}
+  .rec .k{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:600;padding-top:3px}
+  .rec .v b{font-weight:600}
+  .rec .v small{display:block;color:var(--faint);font-size:12px}
+
+  /* the office list */
+  .split{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,300px);gap:24px;align-items:start}
+  @media (max-width:760px){.split{grid-template-columns:1fr}}
+  .list .row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-soft);align-items:center;font-size:13.5px}
+  .list .row:last-child{border-bottom:0}
+  .list .row b{display:block;font-weight:700}
+  .list .row small{display:block;color:var(--muted);font-size:12.5px;margin-top:1px}
+  .btn{display:inline-block;padding:7px 13px;border-radius:999px;font-size:12.5px;font-weight:700;background:var(--gold);color:#1B365D;white-space:nowrap}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--muted)}
+  .btn.done{background:var(--ok-soft);color:var(--ok)}
+
+  /* boxes */
+  .boxes{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:700px){.boxes{grid-template-columns:1fr}}
+  .means{border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;background:var(--surface);padding:20px 22px}
+  .means h3{margin:0 0 10px;font-size:18px;letter-spacing:-.015em}
+  .means ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15px}
+  .means li b{font-weight:600}
+  footer{color:var(--faint);font-size:12.5px;line-height:1.5;max-width:72ch}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
-<div class="frame"><b>DEMONSTRATION</b>
-  <span>built for Sunny Energy RX by Steel Rule Studio &middot; sample data</span></div>
-
 <div class="wrap">
 
 <header>
-  <div class="kick">Workstream two &middot; scheduling</div>
-  <h1>From alert to booked, without anyone retyping it</h1>
-  <p class="lede">My Solar Rx already finds the fault before the customer does. The
-  gap is what happens next: today that becomes a notification somebody has to chase.
-  This turns it into a booked job while the office is asleep.</p>
+  <img class="logo" src="data:image/png;base64,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" alt="Sunny Energy Rx">
+  <div class="kicker">Prepared for Sunny Energy Rx by Steel Rule Studio &middot; two of three</div>
+  <h1>One appointment, three places, nobody copies anything</h1>
+  <p class="sub">Today a request comes in, someone phones the customer, agrees a time, enters it in Zoho FSM, then types it again into TeamUp. With this, the customer picks a window that is open on your calendar and the appointment is written once, to Zoho and to the calendar, with a confirmation text on its way.</p>
 </header>
 
 <section>
-  <h2>What My Solar Rx already caught</h2>
-  <div class="alert">
-    <div class="top">
-      <span class="src">Alert</span>
-      <span class="h">
-        <b>M. Whitfield, Surprise AZ</b>
-        <span>SolarEdge SE10000H &middot; 32 panels &middot; PTO 2015</span>
-      </span>
+  <div class="tag">The same request, both ways</div>
+  <div class="cmp">
+    <div class="col">
+      <h3>Today</h3>
+      <div class="st"><i>1</i><span>My Solar Rx flags the system. The customer and the office both get a notification.</span></div>
+      <div class="st"><i>2</i><span>She taps <b>Request service</b>. Your app tells her: <b>"Our team will contact you within 48 hours."</b></span></div>
+      <div class="st"><i>3</i><span>Someone in the office notices the request in the queue.<small>Whenever somebody next looks.</small></span></div>
+      <div class="st"><i>4</i><span>Someone phones her.<small>She may not pick up. Voicemail tag.</small></span></div>
+      <div class="st"><i>5</i><span>A time is agreed on the phone.</span></div>
+      <div class="st"><i>6</i><span>Entered in Zoho FSM.</span></div>
+      <div class="st"><i>7</i><span>Typed again into TeamUp.</span></div>
+      <div class="tally"><div><b>5</b><span>times a person touches it</span></div><div><b>48 hrs</b><span>the wait your app promises</span></div></div>
     </div>
-    <div class="grid">
-      <div class="g"><i>Detected</i><b>11 days ago</b></div>
-      <div class="g"><i>Output</i><b>0 kWh</b></div>
-      <div class="g"><i>Expected</i><b>47 kWh/day</b></div>
-      <div class="g"><i>Lost so far</i><b>517 kWh</b></div>
-    </div>
-  </div>
-  <p class="note" style="margin-top:12px">This is the part you already built, and it
-  is the hard part. The inverter makers do not alert well, which is why a customer
-  can sit dark for a month and find out from a utility bill. You are ahead of that
-  already. <b>The value is leaking after the alert, not before it.</b></p>
-</section>
-
-<section>
-  <h2>The two paths</h2>
-  <div class="two">
     <div class="col now">
-      <div class="ch"><div class="t">As you described it</div>
-        <div class="n">Today</div></div>
-      <ol class="flow">
-        <li><span class="n">1</span><span>Alert fires, office gets a notification</span></li>
-        <li><span class="n">2</span><span>Someone notices it in the queue<small>Whenever somebody next looks</small></span></li>
-        <li><span class="n">3</span><span>Someone calls the customer<small>Who may not pick up</small></span></li>
-        <li><span class="n">4</span><span>Agree a time by phone or voicemail tag</span></li>
-        <li><span class="n">5</span><span>Enter the job in Zoho FSM</span></li>
-        <li><span class="x">6</span><span>Retype it into TeamUp by hand<small>"Probably not the most efficient, but it's what we're doing right now"</small></span></li>
-      </ol>
-      <div class="tally"><span>Human touches</span><b>5</b></div>
-    </div>
-
-    <div class="col next">
-      <div class="ch"><div class="t">What this shows</div>
-        <div class="n">Instead</div></div>
-      <ol class="flow">
-        <li><span class="n">1</span><span>Alert fires</span></li>
-        <li><span class="n">2</span><span>Customer is texted with real open slots<small>Pulled from the live schedule, not a guess</small></span></li>
-        <li><span class="n">3</span><span>They tap one<small>At 9pm, on the sofa, no phone tag</small></span></li>
-        <li><span class="n">4</span><span>Written once, to both the job record and the calendar</span></li>
-      </ol>
-      <div class="tally"><span>Human touches</span><b>0</b></div>
+      <h3>With this</h3>
+      <div class="st"><i>1</i><span>My Solar Rx flags the system. Same alert as today.</span></div>
+      <div class="st"><i>2</i><span>She taps <b>Request service</b> and sees the three windows that are open on your calendar.</span></div>
+      <div class="st"><i>3</i><span>She taps one.</span></div>
+      <div class="st"><i>4</i><span><b>Written once:</b> the Zoho FSM appointment and the calendar entry, in the same moment.</span></div>
+      <div class="st"><i>5</i><span>A confirmation text goes to her phone.<small>Dave assigns the technician from the board, as now.</small></span></div>
+      <div class="tally"><div><b>0</b><span>times a person touches it</span></div><div><b>1 min</b><span>from her tap to a booked visit</span></div></div>
     </div>
   </div>
-  <p class="note" style="margin-top:12px">A person still steps in the moment anything
-  is unusual. What goes away is the ordinary case, which is most of them.</p>
+  <div class="cap"><p>A person still steps in the moment anything is unusual. What goes away is the ordinary case, which is most of them.</p></div>
 </section>
 
 <section>
-  <h2>What the customer sees. Try it.</h2>
-  <div class="phone">
-    <div class="bar">Messages &middot; Sunny Energy RX</div>
-    <div class="thread">
-      <div class="msg in">
-        Sunny Energy RX here. Your system has not produced since 4 September and we
-        think it needs a look. That is about 517 kWh so far.
-      </div>
-      <div class="msg in">
-        We can come out. Pick whichever suits:
-        <div class="slots" id="slots">
-          <button class="slot" data-s="Thu 18 Sep, 8 to 11am">Thu 18 Sep, 8 to 11am <span class="tick">&#10003;</span></button>
-          <button class="slot" data-s="Fri 19 Sep, 1 to 4pm">Fri 19 Sep, 1 to 4pm <span class="tick">&#10003;</span></button>
-          <button class="slot" data-s="Mon 22 Sep, 8 to 11am">Mon 22 Sep, 8 to 11am <span class="tick">&#10003;</span></button>
+  <div class="tag gold">Their app</div>
+  <h2>Same app. One screen changes.</h2>
+  <p class="lede">Both phones are your app as it looks today. The left one is the Request Service screen your customers see now. The right one is the same screen with this in place.</p>
+  <div class="phones">
+    <div class="pcol">
+      <div class="plabel">Today</div>
+      <div class="phone"><div class="screen app">
+        <div class="island"></div>
+        <div class="sbar"><span>9:12</span><span>&#9679;&#9679;&#9679;</span></div>
+        <div class="ahead"><span class="t">&#9728; My Solar RX</span><span class="svc">&#128295; Service</span></div>
+        <div class="abody">
+          <div class="acard attn"><div><div class="k">&#9679; My solar system</div><div class="big">Needs Attention</div></div><div class="ring">&#9638;</div></div>
+          <div class="tiles"><div><b>0 kWh</b>Today</div><div class="g"><b>0 days</b>Alert-Free</div><div class="r"><b>1 alert</b>Alerts</div></div>
+          <div class="req">
+            <div class="h">Request Service</div>
+            <div class="n">Our team will contact you within 48 hours</div>
+            <div class="lbl">Reason *</div>
+            <div class="field">System not producing since Sep 8</div>
+            <div class="lbl">Notes</div>
+            <div class="field empty">Optional</div>
+            <div class="abtn">Submit request</div>
+          </div>
         </div>
-      </div>
-      <div id="reply"></div>
+      </div></div>
+    </div>
+    <div class="pcol">
+      <div class="plabel new">With this</div>
+      <div class="phone"><div class="screen app">
+        <div class="island"></div>
+        <div class="sbar"><span>9:12</span><span>&#9679;&#9679;&#9679;</span></div>
+        <div class="ahead"><span class="t">&#9728; My Solar RX</span><span class="svc">&#128295; Service</span></div>
+        <div class="abody">
+          <div class="acard attn"><div><div class="k">&#9679; My solar system</div><div class="big">Needs Attention</div></div><div class="ring">&#9638;</div></div>
+          <div class="tiles"><div><b>0 kWh</b>Today</div><div class="g"><b>0 days</b>Alert-Free</div><div class="r"><b>1 alert</b>Alerts</div></div>
+          <div class="req">
+            <div class="h">Request Service</div>
+            <div class="n">Pick a time that suits you. These are open now.</div>
+            <div class="win sel"><span>Tue Sep 22<br><small>8 to 11 AM</small></span><span class="chk"></span></div>
+            <div class="win"><span>Thu Sep 24<br><small>1 to 4 PM</small></span><span class="chk"></span></div>
+            <div class="win"><span>Fri Sep 25<br><small>8 to 11 AM</small></span><span class="chk"></span></div>
+            <div class="abtn">Book Tuesday, 8 to 11</div>
+          </div>
+        </div>
+      </div></div>
     </div>
   </div>
-  <p class="hint" id="hint">Tap a slot</p>
+  <div class="cap">
+    <p>Today the button promises a call within 48 hours. With this, the same button shows the windows that are actually open on your calendar and books the one she taps. Nothing else in the app changes.</p>
+    <p><b>The phone line in item one books the same way,</b> into the same record. So does a booking Chris takes by hand.</p>
+  </div>
 </section>
 
 <section>
-  <h2>Where it lands</h2>
-  <div class="lands">
-    <div class="land" id="l1"><span class="done">&#10003;</span>
-      <div class="t">Zoho FSM</div>
-      <div class="m">Work order created</div>
-      <p>Customer, system and the fault history already attached. Nobody types it in.</p>
+  <div class="tag">Where the windows come from</div>
+  <h2>Your calendar decides what she can pick.</h2>
+  <div class="window">
+    <div class="bar"><i></i><i></i><i></i><span>Team calendar &middot; week of Sep 21 &middot; TeamUp as it is today, or Zoho's own calendar</span></div>
+    <div class="pane calwrap">
+      <div class="cal">
+        <div class="h"></div>
+        <div class="h">Mon<small>21</small></div><div class="h today">Tue<small>22</small></div><div class="h">Wed<small>23</small></div><div class="h">Thu<small>24</small></div><div class="h">Fri<small>25</small></div>
+        <div class="tm">8 to 11<br>AM</div>
+        <div class="c"><div class="ev"><b>Park</b>inverter swap</div></div>
+        <div class="c"><div class="ev new"><b>Reyes</b>diagnostic, 4821 E Cactus</div></div>
+        <div class="c"><div class="ev"><b>Whitaker</b>battery consult</div></div>
+        <div class="c"><div class="ev"><b>Brandt</b>diagnostic</div></div>
+        <div class="c open"><span>Open</span></div>
+        <div class="tm">1 to 4<br>PM</div>
+        <div class="c"><div class="ev"><b>Salas</b>optimizer</div></div>
+        <div class="c"><div class="ev"><b>Park</b>follow up</div></div>
+        <div class="c"><div class="ev"><b>Nguyen</b>cleaning</div></div>
+        <div class="c open"><span>Open</span></div>
+        <div class="c"><div class="ev"><b>Kim</b>warranty</div></div>
+      </div>
     </div>
-    <div class="land" id="l2"><span class="done">&#10003;</span>
-      <div class="t">The schedule</div>
-      <div class="m">Same entry, once</div>
-      <p>The double entry is the thing that goes away, whether the calendar stays
-      TeamUp or not.</p>
+  </div>
+  <div class="cap">
+    <p>The three windows she was offered are the three that were open: Tuesday morning, Thursday afternoon, Friday morning. The green one is hers now. <b>It only offers windows that are open here, inside your hours, so it cannot double book.</b> Nobody opened TeamUp. Nobody retyped an address.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag">Written once</div>
+  <h2>One booking lands in three places.</h2>
+  <div class="three">
+    <div class="src"><b>Her tap</b><span>or a phone booking, or Chris by hand</span></div>
+    <div class="dst"><b>Zoho FSM</b><p>A Service Appointment under her Work Order, in the fields Zoho already has.</p></div>
+    <div class="dst"><b>The calendar</b><p>The same entry, at the same moment. TeamUp today, or Zoho's calendar.</p></div>
+    <div class="dst"><b>The technician's phone</b><p>On Dave's job list for Tuesday, with the address and the system. Item three.</p></div>
+  </div>
+  <div class="window">
+    <div class="bar"><i></i><i></i><i></i><span>Zoho FSM &middot; Service Appointment &middot; under Work Order WO-0412</span></div>
+    <div class="pane">
+      <div class="rechead"><span class="id">SA-0412</span><span class="pill ok">Scheduled</span><span class="pill src">Created from the My Solar Rx request</span></div>
+      <div class="rec">
+        <div class="f"><span class="k">Summary</span><span class="v">Diagnostic visit. No production since about Sep 8. App alert, 93% below typical.</span></div>
+        <div class="f"><span class="k">Work Order</span><span class="v"><b>WO-0412</b><small>Diagnostic visit</small></span></div>
+        <div class="f"><span class="k">Contact</span><span class="v"><b>Maria Reyes</b><small>(602) 555-0148</small></span></div>
+        <div class="f"><span class="k">Service Address</span><span class="v">4821 E Cactus Rd<small>Phoenix, AZ 85032</small></span></div>
+        <div class="f"><span class="k">Scheduled Start</span><span class="v"><b>Tue Sep 22, 8:00 AM</b></span></div>
+        <div class="f"><span class="k">Scheduled End</span><span class="v"><b>Tue Sep 22, 11:00 AM</b></span></div>
+        <div class="f"><span class="k">Asset</span><span class="v">SolarEdge SE7600H, 22 panels<small>Installed 2019 by Titan Solar</small></span></div>
+        <div class="f"><span class="k">Service Resource</span><span class="v">Unassigned<small>Dave picks from the board</small></span></div>
+        <div class="f"><span class="k">Status</span><span class="v">Scheduled</span></div>
+        <div class="f"><span class="k">Created</span><span class="v">Sep 16, 9:12 AM<small>automatically, nobody typed it</small></span></div>
+      </div>
     </div>
-    <div class="land" id="l3"><span class="done">&#10003;</span>
-      <div class="t">The technician</div>
-      <div class="m">Shows up on their phone</div>
-      <p>Straight onto the job list, with the fault already written down.</p>
+  </div>
+  <div class="cap">
+    <p>A real Service Appointment in Zoho FSM, with the fields Zoho already has: Summary, Contact, Service Address, Scheduled Start and End, Service Resource. It is written through the connection Zoho provides for this, and it is the same record a person would create by hand. <b>Zoho stays the system of record.</b> Nothing is added to your setup.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag gold">When your team spots it first</div>
+  <h2>You see it before she does. Same booking, one tap.</h2>
+  <p class="lede">You usually see the fault before the customer does. Today that means a phone call to her. With this, a person still looks first, then sends the open windows instead of dialing.</p>
+  <div class="split">
+    <div class="window">
+      <div class="bar"><i></i><i></i><i></i><span>Dave's morning list &middot; Wed Sep 16</span></div>
+      <div class="pane list">
+        <div class="row"><div><b>Reyes, 4821 E Cactus Rd</b><small>SolarEdge. No production for 3 days. Alert Sep 8. The inverter is reporting a fault, not a lost connection.</small></div><span class="btn">Offer a visit</span></div>
+        <div class="row"><div><b>Whitfield, Surprise</b><small>SolarEdge. Reporting again after last night's router reset. No visit needed.</small></div><span class="btn ghost">Clear</span></div>
+        <div class="row"><div><b>Ochoa, Glendale</b><small>Production 40% under typical for a week. Worth a look.</small></div><span class="btn">Offer a visit</span></div>
+        <div class="row"><div><b>Park, Tempe</b><small>Offered Monday. She picked Tuesday 1 to 4. Booked.</small></div><span class="btn done">Booked</span></div>
+      </div>
+    </div>
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="sbar"><span>8:41</span><span>&#9679;&#9679;&#9679;</span></div>
+      <div class="apphead"><span class="av">SE</span><div><div class="who">Sunny Energy Rx</div><div class="meta">Text message</div></div></div>
+      <div class="sms">
+        <div class="from">Wed Sep 16, 8:41 AM</div>
+        <div class="msg">Sunny Energy Rx: Dave checked your system this morning. It has not produced since Sep 8 and we think it needs a look. We can come out:<br>1. Tue Sep 22, 8 to 11 AM<br>2. Thu Sep 24, 1 to 4 PM<br>3. Fri Sep 25, 8 to 11 AM<br>Reply with a number, or call us.</div>
+        <div class="msg me">1</div>
+        <div class="msg">Booked. Tue Sep 22, between 8 and 11 AM, at 4821 E Cactus Rd. Dave will text when on the way. Reply R if you need to move it.</div>
+        <div class="t">Delivered</div>
+      </div>
+    </div></div>
+  </div>
+  <div class="cap">
+    <p><b>A person decides.</b> Dave looks at the system and taps once. She gets the same three windows, replies with a number, and the same record, calendar entry, and confirmation follow. If she has not replied by the next morning, she is back on Dave's list.</p>
+  </div>
+</section>
+
+<section>
+  <div class="tag">Text messages</div>
+  <h2>She hears from you four times. Nobody types any of it.</h2>
+  <div class="split">
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="sbar"><span>11:20</span><span>&#9679;&#9679;&#9679;</span></div>
+      <div class="apphead"><span class="av">SE</span><div><div class="who">Sunny Energy Rx</div><div class="meta">Text message</div></div></div>
+      <div class="sms">
+        <div class="from">Wed Sep 16, 9:13 AM</div>
+        <div class="msg">Sunny Energy Rx: You're booked for a diagnostic visit <b>Tue Sep 22, between 8 and 11 AM</b>, at 4821 E Cactus Rd. Reply R to move it.</div>
+        <div class="from">Mon Sep 21, 5:00 PM</div>
+        <div class="msg">Reminder from Sunny Energy Rx: your visit is tomorrow, Tue Sep 22, between 8 and 11 AM. Reply C to confirm or R to move it.</div>
+        <div class="from">Tue Sep 22, 8:34 AM</div>
+        <div class="msg">Dave from Sunny Energy Rx is on the way, about 25 minutes out.</div>
+        <div class="from">Tue Sep 22, 11:20 AM</div>
+        <div class="msg">Thanks for having us out today. If you have a minute, a Google review helps a small company a lot: <a href="#">g.page/sunnyenergyrx/review</a></div>
+        <div class="t">Delivered</div>
+      </div>
+    </div></div>
+    <div class="cap" style="margin-top:0">
+      <p><b>Confirmation</b> the moment it books. <b>Reminder</b> the evening before. <b>On the way</b> when the technician taps Start job on his phone, item three. <b>The Google review link</b> after the job, which Chris sends by hand today.</p>
+      <p>She can move the visit by replying R, and the calendar and the Zoho record move with it.</p>
     </div>
   </div>
 </section>
 
-<footer>
-  <b>What this is.</b> A demonstration of the flow, built from what you described on
-  the call. It is not connected to My Solar Rx, Zoho FSM or TeamUp yet, and the
-  customer here is invented. The real work is those three connections, which is what
-  the estimate covers.
-</footer>
-
+<div class="boxes">
+  <div class="means">
+    <h3>What stays the same</h3>
+    <ul>
+      <li><b>Zoho FSM is still the record.</b> This writes into it instead of asking someone to.</li>
+      <li><b>TeamUp stays</b> until you decide otherwise. The entry lands there without the retyping.</li>
+      <li><b>Dave assigns the technician.</b> The booking arrives unassigned, on his board.</li>
+      <li><b>Chris can still book by hand.</b> It shows up the same way, once.</li>
+      <li><b>The customer can always call.</b> The line in item one answers when nobody can.</li>
+    </ul>
+  </div>
+  <div class="means">
+    <h3>The rules it follows</h3>
+    <ul>
+      <li><b>It only offers windows that are open,</b> inside your hours. Never a made-up time.</li>
+      <li><b>It never diagnoses.</b> The app says the system needs a look; a person says what is wrong.</li>
+      <li><b>Anything unusual goes to a person:</b> a roof leak, a commercial site, an upset customer.</li>
+      <li><b>When your team spots it first, a person looks before anything is sent.</b></li>
+      <li><b>You can pause it</b> any time, and requests go back to the queue as they are today.</li>
+    </ul>
+  </div>
 </div>
 
-<script>
-const slots = document.getElementById("slots");
-const reply = document.getElementById("reply");
-const hint  = document.getElementById("hint");
+<footer>Names, numbers and addresses are illustrative. The app screens are drawn from your app as it looks today; the screen marked "with this" shows the one change. The Zoho record uses fields Zoho FSM already has. This page is not connected to My Solar Rx, Zoho FSM or TeamUp yet; those three connections are the work in the outline. Text messages switch on once the carrier registration in your company's name clears.</footer>
 
-slots.addEventListener("click", e => {
-  const b = e.target.closest(".slot");
-  if (!b) return;
-  [...slots.children].forEach(s => s.classList.remove("picked"));
-  b.classList.add("picked");
-  const when = b.dataset.s;
-
-  reply.innerHTML =
-    `<div class="msg out">${when}</div>
-     <div class="msg in">Booked, ${when}. A technician will text when they are on
-     the way. Reply R if you need to move it.</div>`;
-  hint.textContent = "Written once. Nobody in the office touched it.";
-
-  ["l1","l2","l3"].forEach((id,i) =>
-    setTimeout(() => document.getElementById(id).classList.add("on"), 260 + i*260));
-});
-</script>
+</div>
 </body>
 </html>

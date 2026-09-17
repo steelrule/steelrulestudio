@@ -1,342 +1,268 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>The calls you never knew you missed | Steel Rule Studio</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<title>Sunny Energy Phone Line | Steel Rule Studio</title>
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <style>
   :root{
-    --ground:#F4F3F0; --card:#FFFFFF; --raised:#EDEBE6; --edge:#DEDAD2;
-    --ink:#1B1E24; --muted:#5E6570; --faint:#8A919B;
-    --accent:#8A5A16; --accent-bg:#F6EEDF;
-    --fault:#A8433A; --fault-bg:#F8E8E6;
-    --ok:#33705A; --ok-bg:#E3F0EA;
-    --info:#2B5F80; --info-bg:#E4EEF5;
-    --shadow:0 1px 2px rgba(20,22,28,.07),0 4px 14px rgba(20,22,28,.05);
+    --navy:#1B365D; --blue:#2B7BD6; --gold:#F2B01E;
+    --ground:#F5F8FC; --surface:#FFFFFF; --raised:#EEF3F9; --sunk:#E4EBF3;
+    --ink:#142033; --muted:#5B6B80; --faint:#8C9AAD;
+    --line:#D8E0EA; --line-soft:#E7EDF4;
+    --ok:#1F8A5B; --ok-soft:#E3F3EA; --alert:#D14343; --alert-soft:#FBE7E7;
+    --agent:#E8F1FC; --agent-ink:#1B365D; --bezel:#101826; --bezel-edge:#2A3546;
+    --shadow:0 22px 50px -22px rgba(10,20,40,.45);
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){
-      --ground:#131519; --card:#1B1E24; --raised:#22262D; --edge:#2B3038;
-      --ink:#E7EAEE; --muted:#98A1AC; --faint:#6F7885;
-      --accent:#D9A34E; --accent-bg:#2C2415;
-      --fault:#DE8378; --fault-bg:#35201D;
-      --ok:#6CBE9C; --ok-bg:#16301F;
-      --info:#71AFD4; --info-bg:#152833;
-      --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+      --navy:#8DBAEE; --blue:#5FA3F0; --gold:#F2B01E;
+      --ground:#0E141C; --surface:#161E29; --raised:#1C2632; --sunk:#121922;
+      --ink:#E6EDF5; --muted:#93A3B6; --faint:#6E7E92;
+      --line:#273240; --line-soft:#1F2936;
+      --ok:#4FC28A; --ok-soft:#153224; --alert:#F08383; --alert-soft:#3A1F1F;
+      --agent:#1D3450; --agent-ink:#DCE9F8; --bezel:#05080D; --bezel-edge:#1A2330;
+      --shadow:0 22px 50px -22px rgba(0,0,0,.7);
     }
   }
+  :root[data-theme="dark"]{
+    --navy:#8DBAEE; --blue:#5FA3F0; --gold:#F2B01E;
+    --ground:#0E141C; --surface:#161E29; --raised:#1C2632; --sunk:#121922;
+    --ink:#E6EDF5; --muted:#93A3B6; --faint:#6E7E92;
+    --line:#273240; --line-soft:#1F2936;
+    --ok:#4FC28A; --ok-soft:#153224; --alert:#F08383; --alert-soft:#3A1F1F;
+    --agent:#1D3450; --agent-ink:#DCE9F8; --bezel:#05080D; --bezel-edge:#1A2330;
+    --shadow:0 22px 50px -22px rgba(0,0,0,.7);
+  }
   *{box-sizing:border-box}
-  html,body{margin:0}
-  body{background:var(--ground);color:var(--ink);
-    font-family:Barlow,system-ui,-apple-system,Segoe UI,sans-serif;
-    font-size:16px;line-height:1.55}
-  .frame{background:var(--ink);color:var(--ground);padding:7px 14px;
-    font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;
-    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;text-align:center;line-height:1.4}
-  .frame b{color:#D9A34E;font-weight:600}
-  .frame span{opacity:.72}
+  body{background:var(--ground);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+    font-size:16px;line-height:1.55;padding:32px 20px 90px}
+  .wrap{max-width:900px;margin:0 auto}
+  header{display:flex;flex-direction:column;gap:14px;margin-bottom:44px}
+  .logo{width:150px;background:#fff;padding:9px 12px;border-radius:9px;display:block;
+    box-shadow:0 1px 0 rgba(20,32,51,.06)}
+  .kicker{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:600}
+  h1{font-weight:800;font-size:clamp(30px,5vw,44px);line-height:1.05;letter-spacing:-.025em;margin:0;text-wrap:balance}
+  .sub{color:var(--muted);font-size:17px;margin:0;max-width:58ch}
 
-  .wrap{max-width:940px;margin:0 auto;padding:30px 20px 70px;
-    display:flex;flex-direction:column;gap:26px}
-  .kick{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--accent);font-weight:600}
-  h1{margin:7px 0 0;font-size:clamp(27px,4.3vw,40px);font-weight:700;
-    letter-spacing:-.025em;line-height:1.05;text-wrap:balance}
-  .lede{color:var(--muted);margin:11px 0 0;max-width:62ch;font-size:16.5px}
-  .quote{border-left:3px solid var(--accent);background:var(--accent-bg);
-    padding:13px 17px;border-radius:0 8px 8px 0;margin:18px 0 0;max-width:62ch}
-  .quote p{margin:0;font-size:16px;font-style:italic}
-  .quote cite{display:block;font-style:normal;font-size:12.5px;color:var(--muted);
-    margin-top:6px;font-family:"IBM Plex Mono",monospace}
+  .frames{position:relative;padding-left:52px}
+  .frames::before{content:"";position:absolute;left:17px;top:18px;bottom:18px;width:2px;background:var(--line)}
+  .frame{position:relative;display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:32px;
+    align-items:center;padding:8px 0 48px}
+  .frame:last-child{padding-bottom:8px}
+  @media (max-width:700px){.frames{padding-left:40px}.frame{grid-template-columns:1fr;gap:18px}}
+  .frame .n{position:absolute;left:-52px;top:8px;width:36px;height:36px;border-radius:50%;
+    background:var(--navy);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;
+    justify-content:center;box-shadow:0 0 0 5px var(--ground)}
+  @media (max-width:700px){.frame .n{left:-40px;width:30px;height:30px;font-size:12.5px}}
+  .cap h2{font-size:21px;font-weight:700;letter-spacing:-.015em;margin:0 0 8px;text-wrap:balance}
+  .cap p{margin:0;color:var(--muted);font-size:15.5px}
+  .cap p+p{margin-top:8px}
+  .cap b{color:var(--ink);font-weight:600}
 
-  h2{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.15em;
-    text-transform:uppercase;color:var(--faint);margin:0 0 14px;font-weight:600}
+  .phone{width:290px;max-width:100%;background:var(--bezel);border-radius:42px;padding:11px;
+    box-shadow:var(--shadow),inset 0 0 0 1.5px var(--bezel-edge);justify-self:start}
+  .screen{background:var(--surface);border-radius:32px;overflow:hidden;position:relative;
+    min-height:560px;display:flex;flex-direction:column;font-size:13.5px}
+  .island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:94px;height:27px;
+    background:var(--bezel);border-radius:14px;z-index:2}
+  .sbar{display:flex;justify-content:space-between;padding:14px 22px 0;font-size:12px;font-weight:600;
+    color:var(--ink)}
+  .apphead{padding:16px 16px 10px;border-bottom:1px solid var(--line-soft)}
+  .apphead .who{font-weight:700;font-size:15px}
+  .apphead .meta{font-size:11.5px;color:var(--faint);margin-top:2px}
 
-  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
-    border:1px solid var(--edge);border-radius:11px;overflow:hidden;background:var(--card);
-    box-shadow:var(--shadow)}
-  .stat{padding:15px 17px;border-right:1px solid var(--edge)}
-  .stat:last-child{border-right:0}
-  .stat b{display:block;font-family:"IBM Plex Mono",monospace;font-size:27px;
-    font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
-  .stat .l{font-size:13px;color:var(--muted);margin-top:3px}
-  .stat.hero b{color:var(--fault)}
-  .stat.good b{color:var(--ok)}
+  .chat{padding:12px 12px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .bub{max-width:86%;padding:9px 12px;border-radius:16px;line-height:1.4;font-size:13px}
+  .bub.a{background:var(--agent);color:var(--agent-ink);border-bottom-left-radius:5px;align-self:flex-start}
+  .bub.c{background:var(--blue);color:#fff;border-bottom-right-radius:5px;align-self:flex-end}
+  .bub.sys{align-self:center;background:transparent;color:var(--faint);font-size:11px;padding:2px 0}
 
-  .split{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;
-    align-items:start}
-  @media (max-width:800px){.split{grid-template-columns:1fr}}
-  .panel{background:var(--card);border:1px solid var(--edge);border-radius:11px;
-    box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column}
-  .panel .ph{padding:11px 15px;border-bottom:1px solid var(--edge);background:var(--raised);
-    display:flex;align-items:center;gap:10px}
-  .panel .ph h3{margin:0;font-family:"IBM Plex Mono",monospace;font-size:11px;
-    letter-spacing:.11em;text-transform:uppercase;color:var(--muted);font-weight:600;flex:1}
-  .replay{border:1px solid var(--edge);background:var(--card);border-radius:7px;
-    padding:5px 11px;font-family:"IBM Plex Mono",monospace;font-size:11px;
-    cursor:pointer;color:var(--ink)}
-  .replay:hover{background:var(--accent-bg);border-color:var(--accent);color:var(--accent)}
-  .replay:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+  .calling{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+    padding:20px;text-align:center}
+  .calling .avatar{width:82px;height:82px;border-radius:50%;background:var(--raised);display:flex;
+    align-items:center;justify-content:center;font-weight:800;font-size:24px;color:var(--navy)}
+  .calling .name{font-weight:700;font-size:18px}
+  .calling .state{color:var(--faint);font-size:13px}
+  .calling .row{display:flex;gap:26px;margin-top:22px}
+  .calling .btn{width:60px;height:60px;border-radius:50%;background:var(--raised)}
+  .calling .btn.end{background:var(--alert)}
 
-  .convo{padding:15px;display:flex;flex-direction:column;gap:11px;min-height:330px}
-  .turn{display:flex;gap:10px;max-width:92%}
-  .turn.them{align-self:flex-start}
-  .turn.agent{align-self:flex-end;flex-direction:row-reverse}
-  .turn .tag{font-family:"IBM Plex Mono",monospace;font-size:9.5px;letter-spacing:.09em;
-    color:var(--faint);padding-top:8px;white-space:nowrap}
-  .turn .bub{padding:9px 13px;border-radius:12px;font-size:14.5px;line-height:1.45}
-  .turn.them .bub{background:var(--raised);border:1px solid var(--edge);border-bottom-left-radius:4px}
-  .turn.agent .bub{background:var(--info-bg);border:1px solid var(--info);
-    color:var(--ink);border-bottom-right-radius:4px}
+  .sms{padding:14px 12px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .sms .from{text-align:center;color:var(--faint);font-size:11px}
+  .sms .msg{background:var(--raised);padding:10px 13px;border-radius:16px;border-bottom-left-radius:5px;
+    max-width:92%;font-size:13px;line-height:1.45}
+  .sms .msg a{color:var(--blue);text-decoration:none;font-weight:600}
+  .sms .t{color:var(--faint);font-size:10.5px;padding-left:4px}
 
-  .ext{padding:0;display:flex;flex-direction:column}
-  .row{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:10px 15px;
-    border-bottom:1px solid var(--edge);font-size:14px;align-items:baseline}
-  .row:last-child{border-bottom:0}
-  .row .k{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;
-    text-transform:uppercase;color:var(--faint)}
-  .row .v{font-weight:500}
-  .row .v small{display:block;color:var(--muted);font-weight:400;font-size:12.5px;margin-top:1px}
-  .row.pend .v{color:var(--faint);font-weight:400;font-style:italic}
-  .badge{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:9.5px;
-    letter-spacing:.09em;text-transform:uppercase;font-weight:600;padding:2px 6px;
-    border-radius:4px;margin-left:5px}
-  .b-ok{background:var(--ok-bg);color:var(--ok)}
-  .b-warn{background:var(--fault-bg);color:var(--fault)}
-
-  .outcome{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
-  .oc{background:var(--card);border:1px solid var(--edge);border-radius:11px;
-    padding:15px 17px;box-shadow:var(--shadow)}
-  .oc .t{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--faint);margin-bottom:7px}
-  .oc .m{font-weight:600;font-size:15.5px;letter-spacing:-.01em}
-  .oc p{margin:5px 0 0;font-size:13.5px;color:var(--muted)}
-  .sms{background:var(--raised);border:1px solid var(--edge);border-radius:10px;
-    padding:11px 13px;font-size:13.5px;margin-top:9px;line-height:1.45}
-
-  .tablewrap{overflow-x:auto;border:1px solid var(--edge);border-radius:11px;
-    background:var(--card);box-shadow:var(--shadow)}
-  table{border-collapse:separate;border-spacing:0;width:100%;min-width:640px}
-  th{background:var(--raised);text-align:left;padding:10px 14px;
-    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.1em;
-    text-transform:uppercase;color:var(--muted);font-weight:600;
-    border-bottom:1px solid var(--edge);white-space:nowrap}
-  td{padding:10px 14px;border-bottom:1px solid var(--edge);font-size:14px;vertical-align:top}
+  .window{border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);
+    box-shadow:var(--shadow);grid-column:1/-1;width:100%}
+  .bar{height:34px;background:var(--raised);border-bottom:1px solid var(--line);display:flex;
+    align-items:center;gap:6px;padding:0 12px}
+  .bar i{width:10px;height:10px;border-radius:50%;background:var(--line);display:inline-block}
+  .bar span{margin-left:10px;font-size:11.5px;color:var(--faint)}
+  .pane{padding:16px 18px}
+  .strip{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;
+    margin-bottom:14px}
+  .strip div{flex:1 1 120px;padding:10px 14px;border-right:1px solid var(--line-soft)}
+  .strip div:last-child{border-right:0}
+  .strip b{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .strip span{font-size:11.5px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);
+    font-weight:600;padding:6px 8px;border-bottom:1px solid var(--line)}
+  td{padding:9px 8px;border-bottom:1px solid var(--line-soft);vertical-align:top}
   tr:last-child td{border-bottom:0}
-  td.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
-    white-space:nowrap;font-size:13px}
-  tr.miss td{background:var(--fault-bg)}
-  tr.miss td:first-child{box-shadow:inset 3px 0 0 var(--fault)}
+  td.t{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted)}
+  .pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.cb{background:var(--agent);color:var(--agent-ink)}
+  .pill.spam{background:var(--sunk);color:var(--muted)}
+  .link{color:var(--blue);font-size:12px;font-weight:600}
+    .frame .tag{grid-column:1/-1;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:-16px}
+  .frame.wide{grid-template-columns:1fr}
+  .frame.wide .cap{max-width:62ch}
 
-  .note{color:var(--muted);font-size:14px;max-width:66ch}
-  .note b{color:var(--ink)}
-  footer{border-top:1px solid var(--edge);padding-top:18px;color:var(--muted);font-size:13.5px}
-  footer b{color:var(--ink)}
-  footer a{color:var(--accent)}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  .means{margin-top:48px;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:10px;
+    background:var(--surface);padding:22px 24px}
+  .means h2{margin:0 0 12px;font-size:19px;letter-spacing:-.015em}
+  .means ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;font-size:15.5px}
+  .means li b{font-weight:600}
+  footer{margin-top:36px;color:var(--faint);font-size:12.5px;line-height:1.5}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-
-<div class="frame"><b>DEMONSTRATION</b>
-  <span>built for Sunny Energy RX by Steel Rule Studio &middot; sample data</span></div>
-
 <div class="wrap">
-
 <header>
-  <div class="kick">Workstream one &middot; inbound</div>
-  <h1>The calls you never knew you missed</h1>
-  <p class="lede">Five people cannot always reach the phone, and a caller who hangs
-  up leaves no trace. This answers when nobody can, works out whether it is a job
-  worth taking, books it, and writes down every call either way.</p>
-  <blockquote class="quote">
-    <p>"We don't know what calls we're missing. If somebody doesn't leave a message,
-    we don't know if it was a wrong call or a prank call or a spam call, or if it was
-    a customer who just moved on to another company. My gut says that's a bigger
-    problem than we realise."</p>
-    <cite>Joe, 15 September</cite>
-  </blockquote>
+  <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAacAAADcCAMAAADjo54cAAAA8FBMVEVMaXELHi4FMnIKIDsxKxkNFx4zKxQbHBIxMSQkKCL+xykFMnEEKl8EKFrgsSQXgb3Clx9OTk4FJFIEL2r7yClOPg6shxwELGMEJlVbW1vHnCDInCC5kR8FM3NERERQUFAJIEL/zir/1SxBQDwfqffJnSCyix3hsCTCmB8EJlYfqvgFM3EYh8UYgr//yir/zCr+zSoXg767kx6xixwEKl8fqfbMnyKogxvPoSFMTEz3wSgYgLwXhMH2wSgcpPDzvicdpO8WfLPZqiRlZWUUd7EZktbmtCXqtyYcm+IFL2kFNXbyvSf/yiofq/gdn+jotSZD5xtFAAAAR3RSTlMAJfsvFxshAQcO/e60fKdWXphGy9ErS51Y03KAPOFksTrt+kTjvzOJomj22Z2/6Nu8b44jjO1IYdCA4YPW7Ln21zlcvyR6xfsDzh4AAAAJcEhZcwAACxMAAAsTAQCanBgAACAASURBVHic7V0Je9o6szbGRrYBhz1sYW2ALA2EpFmbpkkXEkzC//8395nRYtmATZuQcr/juffrIbYs23o9mndGI0lRIokkkkgiiSSSSCKJJJJIIokkkkj+t4WQ9ysVyebEMIzwQmSdQpFsUswzM7zQ2VmE0z8W7eIstIxZr0c4/WMxLy5CMUhkeh/zMJGsFOOiqoc0DymOu1EL/mt57BfDilwMWh/zLJGsltKoFNI85NGO9OmfS/d3NcQ5Mvt2qMpFsmlp7fcDmTlREradiHD411L8va8rgRrV/W1rH/c8kSyXxFUhxPpcDgdr+MKR/L1AuCcsMqfvty+DK6m1x+FuLolCgH8vxtkZCQNKG3RqgTDo+yEFFIXAnf7mASOhkrjQwnAyB51BYKHiVSdD1rlRJH8t2uOFEQKUWetcBdLu0r0VghNRzEwpigC+RS5Cow1GdXYX5OkatdnJRWANZJ3bRBLYgol+NUShSMYKtD/aYHZSD71L3wwlLJEEteElhIWCmpBk2rMgA1W8mhUCw+VEUfAmkbxFir/tkE89c2IFGajSzSzYfilKcRR2j0iChYD3cxmsUBfDyc1qdTBqndl+LPgW42GkTm+Wevt3IhCoemHSXm2gtMFsth8Q3iOKUoI7ROr0JiGKaXfGgVSieGUFGCg8GziSqNmdsIh7JGtIqd0OpBKx/VmAgSrdOIDiKiEKqYbar0jWkcR+JzDendifOSsNlFFtz63xyjAsUZTeMERfI1lH4IPv3FcDwnyJwWzerq4wUNpgNrFqATgZ/U6gmxzJ2tIrWOABrQIKoFjZtRX3rQCWQRSldDezQ2OIkYQLfPKzWUC8wBxYE2t/hYkp3TiTlcqmKErCnt1fRii9j5RuHOibVjSnObYmHgNFvOZpcrIqDEsUo3Y/WwVxJH8mRNHs2Wx1ioNRsyaygTIM4ukTJyeZVRUrpaFj1SIW8U5CLu+c+5XNaVTbE9lAyRnnYJ7mw5Xhcs2eTQrBQdpI/kCK+5YDsZ2lQJHMyUQ2UFrdHZot3UwmzgokiEIyd5NZFNp7LwEz0pkDLVNW4iQZKO2iTmTz5DrBRJ4IRYBIOpO74OSKSFhrQcOF861SwXHuMpITBUaI/3ExnMgGKgFjwJJ5ksKwRLJdBHjk3AqK/S2D978qBkxNImswibkjO1GY4cLkYjgHA8WtUqL2aEjmaSKFYSXTRZBGzmGIMfTuihnNnzLqdTNco4BJzGd9t01JoiS8U+i+JAOV6FdNyXuazAYMJ6JoJUl7Eoh9KIsgkOTifhT/WdEeq8HjFkIz0AbxgsVLQRyKV5ZsoIo2T2RG8zRxw+WknuE4EcWo3jvzcBZBFKVYDZ9i9b8u0Ay1cTEEKMok5rITlahmeOPF9mdooFgVRZszDhPMk6DsRNGrvEck6DrNV8dv3cdT6nYmSqdFoGw7fL5fveBMnHs3qYW4854SgJNroOJXHCc0TxM3XN7tu7Bo9mw+CWMRwCAyo1qU2sc+7UIBGpAEDxfO5nMHyrFipRFn1DqqjWjz7m/+C82TGy43qnx+DVGUzJ0zn3eCk5mIohiZAihxZJ5oow2HEIMLbI3SnTORnSg0Q0Swb9edrbevEpJ54mFY4houoii9kQOwhyUiGdV2UKj+vyUQGOi0wdwEtUcCQkCSE2UOfnfdQKxkoC46VzHpuBuGvSywEkQx+tZ8MrcCs/aIomjjzsowyH9SjGqnA90TCWYSk7kz4p83qbbHFDOzhnjMmB3K8DxmQFbgBD0nSysitEcMYRFEUc5sq52JYJKbxBhb1jgsr8iZgA5wk0ITkejEmYlroEjGuqu7F0wmw4yvP1TQdYJOdHWaERzvjTptOQYSCXQxdsdB2keCmATzk7BM4qpTcgPmwkAZVauNAXLyiOaJhstRHykjZK7T3AkYIARjeVGwYMwjwsnXyYys2Qha2tN4cmAN6ZvrRJmDDvVSMRALBuoRChu1GXRWwjzxgYviFbA7rL5ecOYr47PsgJEZWg70pJE6+VqmXnCcgp9NYPiPCdqbuXCiSLVzQyGgODGH1rQ7NB8PwxQTDge5tGi+ClfMuQjtLQTw4ED1xMEvIoJpoafJDB1n6APKOOuJ1iRVYBI0JgeHSnesqS9OJtZsZnVQ08zx1dUltHqvMLNmloPhcojkUnoBWf93YLdkFmHW5QAeRPTGbcelLJF4ocqcOM4JeP9S6yQe68QTcIWejxK74hVjdvVC+2p/MK6V4Lihx4saXHD2WBsP9gsUPQAV1A07WAfUSaQZEcXI+CJDPfvecQoXEUxLBGxCzXKce9szU5aUbKY+dMAIqMTdJUKnDWYW9nBaJlPUNdOAwSweVoKRLcPUE/VHRM+0OzMwT9R1moMnxlgEkUNQLKI3mk0c8LwjbVoOlDa+nzgeNkEUswbRHiIFgubOCKE0qp02xoQ8g7QLP/GsPuAeK61jwsdBoNu0Ke7sT5IpOHMnKJnsPy5gFzCKN7qQg0hFm3VYQN6RGjAnitT7l4l1hoNBVYtVGD5hrtNEsAjgLyM30ZISPWfu3EdUL7A9adxNYhMQVBrC+g+U4oFLNKc9H8sAW299WBhzx0vGDlinCUZ02afhBndBpWsnDoygeK1kJP7mvADfxjmBIVnedqZNPR/GJOZzx+r0/7BX4gRcszsTII2URQABH7RrvNdDomfB/aFjjWAKak4gffO50xZBJOiZ2jR+w0iAc79f7a0KWxADZVXiiVHvFyyHsQikLh0WfaKhIhsjFZz5R7L6szeqbQzqiCASUUjNguAP+kw3jjWqFhf7O2JoerH0mMlUq7VatZrJPJaKusnTi0RahaIYvX5BTDEkGYtPrsJQ0WhGu90IphCBnmgM3/REpn0Ju4PDQOCuDvvok4qeCiEq1h9rg/2rm5OTk3bbarfbJycnN1eDQe2xntBoF+leYNTtIbAIcK1PoAdl9RlA9KDTjRj52qQP2DcPIuHsF4uaDKOHSyfzHlFRiNYDiAonFgQfgCIwmTvWzGqfFPYH1VLRlC6gKbNoky7EjB0MFQ0dcKyi4OufkL6JRPvo1BqMtnnbm5i9ql04aXsRkgXQat9cDS6LLFYua1Z9ZN1T3UHfrY0wOeOI6q0LFAS0oY1ZEImmGDvyKnrYfxUv7UJ7JUQyVp27q0EpITSRytnIYeP4OCZ4jx9HFHz9w5AsAsWCSBCDdSw3oISjuPXa/t0Mi4XgxKHar/Y8SPUKuDIS6mgdGASGOqLg6x8IsnNothm0GzVaA2B5AqVSv9CxwBVa2tUJcbUNoCr0XeumKEbJrpkIE4aKsEwUfBVNvJZCGbV7BzAQQSQCqeGc6Bkl+wa+fy9IjDkMC1f7+/uDwWB/f3//qnByYlkMrbljMaSYmJROYKiIdrQRI1eI6bMPqwUDBxgbl2if6+ac9X0ozQVfGNcyF/ViLJZAicWK9UymNraBDjIFLWCcT1B7ESqCk1HwFVrkrCeRrmXouCfEMBHQPmQT4rhiZkaWjBJt/rurQa1UhMGNhWoNE7j7PqUcYPNKnqBTccDUTQ6+Io4fH5JYmRzykWKcZap0wsTy+xITxvdc1kxtxmRuiWWi4HTdvvOiNHesdqFfKjJ/doWYiV7GLnQgZjS76QMj4dbusm3RD0KietAZLoF88ZGlf8NljXJmLL4gOOr5kUISj7Z9WWTpqUseslfXpP6Ikz6hTzRmAKEdgRKyA/uxRx3ZkNtr9ap9g0iNpOF9pk9yaiA8aj18zhOaSh1HwNZ6fUUhunjB5ZJL5Rfk4IOnIUAzl/qF3zWY8bT0aRMZNPP8S6ch2RM3LKEkxsADXZic2d1+rU4/uHXaytBKNA475AF59HAxRs6pHnR3Zql/EdY6WFZPp3Zza9ldjIOUU7vlQFzLyanq+7/p+UdPF0Hrcvm7PbSpz7l4Wqva3Mwj6Ws7zgkdLmd9Hob+hC7N7oLUMyBiPnHjvAwoEXyFQ8WxDTNwAivFUeJyKjmdHqVboUhRlHaT0+nebi4Aqdzes1/U9MdP60GdqA07MDKxqFTwIWdG1MzTwaGxhRSMSH2eyx6cOxvHc//UzBq92shyZnzUGDMt6H34pzQawcw0sk67Y0vm0/FApLDW3O4elp4ena9GiuKkTpn8K5y4WrQ7nUK/hI3sP5kpnPRhdAmBKoInKmCiXo5gD6PM36CERqXXL8wsPkfEvQ/zzU4gVL82SqFIeVBiSK3SQMBJzaeY7KaS/won9sXajjW7sWkgR3peGsLpFDJobl3vFnQLvBzJMBXk8Y0/fgKjZN/NXMtH74P8odbuwITegHoX2p0hFVv6PLT0+ZG/9HJcAadkOmHqKGZ575/hJDq/GeXTPtZJp0lYvPOTbAiEs4VlupMK/N0TmJlRp83YhOAh5uVvqxOcwrIUJWj6ZOpgESn8Jlo+lAKQQpwOxJ/xo3+Ik/ignblj3fiZALXrnRuqLtIhWZuG1RB+u84jnNkyJtCz1u37Dley1dd5tEPdE73fNJk6wCnb8oMrRjydd3u8PRffpRpI9UmQrNY/xYl18BhXgEhCzaNUNLvbskbY+bEDEkw+9+cNT2BW27LygI4Lo7XyIo92ACc4SMlIld21aBGEeDqvuijtloEhShrod/u3DCfa2/QwTudYHa9SMc7AJ3Iygu7C5KZOvPkJMgXcS4De9vLOcUZ0Es6qC3zacQQcm8R8SPHp9YpCYj6UNMblV2rg1uHEOz8cnUN31VUqbMEhWxUWU1sEhcCcsXcacCWYYASpErS64u8OH0VZUdqrHYgSnoql5banrixwknQqqUqHWf/gQ0rSwG3EifGJKvpENPwjlAqAKvV7cqqYgMk/o+ONkhgU6DwdArdczcfJonYwL4gpjtT29JTuUTOKEssUXH5qW3FCMep9NirLYkBwEBkyXWlKxPmY11QInRj/J0JgVGPEcyTYLZeXw8YV2uGJKiwidZTOSe6VF4plSInKthQn5kxh5+dXKs6YMauF26bFGYdvfgCzSpcZWR0kxKeU230h9rOAlHq0J/d43oXusXRCRopVuLU4Sc4UGxVEpRKNAM3IBgyx00P78d73Ny4eg1Zc8TtMyyN0AinRM/pQWnCriEenWIhia3GSnKmJq1Q8pETnPAvbtIkkE4KLxK0cw/BT8dVxVIrUAYR6QlBarlP5dGybceLOlDuuNHdmuOqHWC5KwLSptG/jbMWYoJ9cB0e7sXQ5vwZKy5ACd8rMHW0vTq4zNaGdn7REMpuuhMPiG8zOJ8txovTBRYkx8QBKCJxb8pdWo7QMqWly93yL9cnnTE3mfDEPXF+cq9NmU7YIWRUVFxYnHCWZEjKvNuSRF3Xqeatxkp2p+YTRBanXw2HdDcK0mj6Ibz1o1GhJ6d1cOEpL7dSW44RiYJKKq050pQcaLArbq/h9hXjpwxookdY5p4RupGLdW3mQ2nacqDM1mrHl1uhKDwynD077JpQ+rIcS7fKk0oH944rrSaLMqf+240Qf+Kw/5EtNCRIxX73K/KYeQxf0Qc2Ho+SasTBMV9eh6OVd1N9txIkYnowu4i6OQhRyyUgErJXzcYs5EBZ9oO2u5oOzVLCDFIbp71Di9YCFO1Kf1W3E6azeK8Z8E2ZYxMhVp5V7AWzMMO1N10aJxNPMjKl/jZIQs5U+SrrAbA1OinF2Ua31L7u6jyaAOnHr5FkQe6NC2OAFTfQJyyPyesFhmK4pRitd3kKcFKIVM/3R7/3xYy/hmZ7pqpO7NuKmn0Vx232aTIVne2GMDopP3wklVGecMLFlOFGuU+r/bnfu9scw7Zm/KWyrwDzc3oc9is7bfWlWyjL6MF0L0z97ClEPxWk7NqjCZzCKVbvdmXVufsP0WNl3+igSQaTBCwgmBOcGyvQhHNO/FsQJ85a3ASkUAqnfnVlnX5cXcZMXsPwo+qAe7Zb1UJQ4fcAw3mZQUpQcxJGO0oH7NP8DpepV94d8jfFMm41IwTKu5OPog8rcpQCUMB/zIK+q62D6JonDI6kiN2ZrxCjSrWFgQQ+6uuvqrTzfnz6oz2oyn26Z65qxaTimbxQDHSrPyPxmBNZKKSY0l8EEFqb/EGlR6/k6OzS98REVRdFou69BB6gZS8H0l2QqFNO3P5qZO8+rqhoyzePtdzqrX1b7tVqtivNmE7pmrjNPj++5AKNOmyV7hBMCdR064Cn9bhQv8HaQMoifxVE6/p4pPL47mVqi91izR4V2++4KpqGPa9VMJnPRE6D57kz/pHtmbN53ImCYzvegGdYwNLSDPJqq072NUbwlYmCGjDrNY1Lm5m5p6MVSdbB/1+l0YAnk9snJEBcPYKBdSKDxx2CLWk8mYTs0vUOXlweUzsPHi1iXp66H6bs+JM25VZN07uJGxUywSeeWIxbjsCwfaFU+FZ2t4oqbMWxuEFdRjFxKxVhCOB1A1YMZgSyK97Hxe6LDuMc0mearKmxScIEAWMxhcWkvBM1q9zXZPNEdmjYkBEeN9qbqWoYGVS99NJ2GE8INCI+m702n+eAJvu8mptbL1AZXNz6sqPA9Z7h5WmOfx78UwjuxtQwNYaoXOsNzs2K20vlpcre1OT7hu59eLC3Dan7y6DVPlrsU8vsKQd62B1n4axgayjbym4sPrS0wXySJmX4f9RTLsHL3RLuhuG1oIRuC4YdUfp2UIHo6cQClP448BFMKeJQPeRLiEkEZK7GFzOMJXclmU2yP6Ln07jrkgYoGpT+YPAQO0J/vpuMfZSU5VhrFChal5Mvrsh2dpK1/3vnWevmgvLahIXruoPwPyEMQpWgdHOQ+cD0dL1Z3HZtGhtlOdmLr2/e+qxaP/0EXpsXjsX9IHpaLEW/J6Qofi1X/0kP3NmaezHWWQxJCU222CiXfsO+H3le0CN+5eHPmKZI3iMg0YjuBb848RfJOEqc4cVoRydYJjZ4zN3dDNCKSvxViGKapJYoJxmB6BUrLWRQpkn8qxNSK3VYXNy+pjQeDwZXNeEN9iG7umnRPMmxLzwQfWXKGrKx9PdInSi0v/pfMcbHWkPu851jveGyPCoV2uwMy6zzSMxdD1Ccxq3DJtYYhtjfBvQh9jcs3ePAzal6WePPk3DPG4hW8NjcpwHsrMcnNV0rcxVvec3SxOvzH1DSeqyBuLqOCDyvXQrgom9GneDfzmKnVcLXxqzuYMijpE+4kveQ9zHj5IJ1Ol1uY7EwUI1f2zjcisTKdcmnmynFvY5nlMsZSjXg55x0pNnPlFjFyB7AUjnw/eogX2lmQn0T5yf7LrzMe8IypEDzjFdNXyQN7C/52RH84vT0+Pr493fkJZ2gVD9IWiqJ6+dm55Kj/uwHAYGNOU0/EiqWLM499WoITZHaUd49UNTmdqpCiAM+k7yZ3PSlupLx3lIMf+m4yFfc8dDyfPIC3N9PJfNlzRk8ld01ykNyTDxNFabEraKHjly+fZPny6ZSQnU+HXw6/PYjrtOMvX768HOuKsfPp0FP808vnmK+S78e3D3xfP4Dl9Pj74eHLy8vh4afvxw+G8vPb4Zcvh99+ijwf5eHb4acvn35JRiGeV5NqUlXh3yRNgtpwX6i4fG8+XDb4pKWTU3UPlnzcU2HUjEALT/MxTy0HU7UMPxKp6RQgdB+6lZzitBVzd6rmPRAm8tOUrrSOPHURKHjUEn/Hvr48eeXllpDTw6enp1fRlADE09PL15hi4BlP8a9xfyUvh99/4aUw2LLz7fDllZ95Pfz+yyS/oPTLsdjv2YTaX78/SC/c2lOf6eLMyaQ6nSbPcW/nD/KflqQaEcVMq2r+IA6rPcbKu8nkAcUp5fG0yIGaRH1KpKbP0jQVfCOG07n6rKZkCBMpwImUEUjXJpSTybLbo8U+L+JkkNMv8OvwmH/GGuL0GXD6sgwnfyWvXF3M00+vC2d+fnsFXHaYZVJ2vr8+vT7tyP15fE/djSdwtfNWOZ2fTlOe7/Z9xbXsRcRpaTgit6emID8KxcwdwPME46TK7ezB6RmnQhAPTqA/ezn3aCw/3ZUMFmtiX79H0Xh9OhX9ng8nb7/HKvmCcvjKMSaKefsF/np9wc6SnTlFYJ5ejpkzibC9YHkh8b1pWvxpxHef4aE3KESO78324wsFjPQUERDUCiAIxCmZVMFWkQWcpurRM1geH05Kbm+6K1ZoNNIe1FgTfzuVeYTCcHp6/US/+QWcjr08Ait5pZWcHkOzM3XZoTA9fb6FU7ffDl+fXr89sI4OvgJCFOMXdKVMu2ScJGD03WmyTBtT4ifr5E2uIYZezOAe37B79Cp9Akh0iQDj/wJxSqX30OKQBZyO0nlVAoH1e/gpUA0kkIgv9YIcJ/yYJSYsejc0GmQBJ4RPKs8q0eje5g8IFNT5AHrz9Pr9lDJA4+ev7y/QIdITzCLh78NfXq7qwYk9tqmXYbiatZHGeO47JCINrni6kTm2VqTCAiQLKRPBOMXSKioI8eOUj+WSU5dLcH1S9JTKqYSWmuY9TFI0sSyuFWJcYglOAZUgUC+fdQU15fX7jtuD7VCCQXUIqATTLURPWaVPtIfR4/kkTMmhA4vnybzLhv5GCCb20WQx73juMr6n7U734H5kfZxMoHZiarJkn/ZiSlpVBR1kOCF1QCUiWI+XvAt9km4mswV6aj2c6AfA+dvXnz+/YacHMHFTTYCwE2aTsG9kJMLXAr5+D5oprxvnqnrAnPoD9S3TEomZqD+OcbNOT34EyZyg/7SIEzlQn3f9ZisYJw1mpwguIeMUh/fBFySSPiEVp5fHvSTCbeIY206ZpvBKOL0+3RpLcMKiIBhF8eCkKOYtaMu3h53vCLRvspPL8eAjMJeQiBU4xSRKlNv76106/Bh58o0uhjD5aVk8Qk89Ay/3bIobjJOuKLmjKecSXpyUWF4Fau/FCZwoUDOwYS3vl8sowO3pLZXjHU3g9I1xiYV+7+kzK317+wtc2mX69PR95xeSQGALAiH2Q+jcLyjDKXpIvxdDsoo9eAxdwz/3qACjqg8jlr8nTyZcjO8RRYnvqlP1aDedi4nh8FCcyEFShecmCzgpLoTCPhGFpFX1APo/Ne0L0TFKfcgFwGBofPslmJvp5+Wi+AtEEZbZp6dvD4iT3EdCnMaEMB8RVAJUzk8ilvMIJObAXU3uqv8ZTJAHUR3sF5Zueot7DCMxByIBG0MvAgVzlabTaTK/iylDoXwP2t5MTxnZ9uNEypxLCJwo8nndlA74cPK4rRynB9rgr99+Giv93JdbH07E4Hwvht3fJynMYO4cgwbSuCtSCcFVfOLr9zTk5WiXkmraFAQ2VIgHo5sFjPgenR0265MSvvaStadwzmUO1vecQv4+KkkYTgilSpej8eOkmIwOSjghlVDP088+EiFwen0R4uL0/UHZwWjC6/HD8ZMXJ7e80CfmP+3cci00b198OOnHL4cvL6e0EZBKUKKxqBoeP5fEzp+5C2ieT/d22Sv/WZ5eh2HEoLEs2Iyd79HJE44IJlpa8s7GnuoMvVU+TyVVFaKsa/R7SAngo/LjRNApRDoo6RNBN1iFmea+FqFN/PSZy1ewMoLVkdMnbMxv37w4fRPlP+9wnFiQQsQjDIPqk9TvYZjwEHHiVGIZieBxIz0GEs9h3AjfDd9OVVXXLQnEiGix7mV//6rNJ0D5Z0CxPTp1dxtINFCzQcBEb2LGYIlPaNoFnIwDRtgkblDem4IHsdDvKRxCD04QgX72xmldnF6OWxq2SSwWA5fUZd/mMfZOYEVkvneqJ3h5MKqLQUKI79Fo7uGta3wQpy9Un4BKUPfKDctLOB09J/k2eXtJNQmUmFnvXPLZE1FZ1Zpaopjp279hLJBPKMTJaXUxOc0bz+CRI2uNfKPYrqqWCbJQD1eHaA8ekNreoFwi7u/3COcSNNTBH8JIo5b5X4/hZCzxn1ATeO/0tNp/Igs4vX4Fd5YqjBR19+Gk7HwSgUC/xI+eVTWJoqrPOPWGFYK4tbSw1SoxEqXLy1q/X6vJcz0XJnsuiFnrzENm1UAVlNfwoJ84YaL7IOMEsejz6fTciPlxUqi1TWk+2lBW6dCIVwLiERQNF6gQP5f2ezSASwPtCAuyOXl4hOGEESOmb4sS33tOHZQPDg4OyuW8O16Dr5ZMeSL+KxrT1IrFor7W3GlRN59QKKbZ+EuIv/Q8GsyyCmZUisLlwb31cwM9pT6XW0eLOCEdTLf+ACev3ZSieMKMhOJEecQpBhroECMbxvp+yms3fTihPt0u81fjexBuoNFDFkdm8cm96Xl8V3iPgS2/pmB/ytaP4B3fQsIRBn0lQI7Qz47nMSLHY8MQJYFxKR83UFp5NX+epL2AixOztsld6gzyGwFOi4/vxiNofAH9G+KiQRRCSZ8/HuEWN2SlJBiEYJ0d1cXXp+MHDYMdO0BH1sTJpXRGGjs6/G5j2DDw2b7TwCFlccVLm67HAistd+Y4O9cribS8NAkHxAB9cJ8/d8QDqbJPhFxCTT4v4MRog5pcF6fXb8ciwHB7vGNKOKF2UdK3NB4B/pCSkDpPA9kBc12pLr6+fD++PT29Pca/KN9bAydTjoFS/WGBI+buvh0oGtKt166cjljfCDq+RQPVOlJ3czxoZJY5ILGU+pzGSRVw1A3nyTjhp5bky3qaEk60g1Cf18VJikdAREJXJJygddDOLI1HQETiVNFF3MgTYnV18fUFUiIo2fhTnCiBxfFcI82CYkLF3iTY4SUubVi3gK8XRheHXTRQsdQUVtjItWCAeTc5PQJAoJnzMMO5nGvlDnaTUxhq9/d7/AMTOE1dnBiE6+PkiUh4cBJNv2Lc/enwVsJJKBELMhg7393sCMbYheO7pj4RjLGAOSjT6JGrWOStqtQdw/p7V4Oqu007rA6L86q9rD2WPoJIBDLQqZovsxW0lRasGACHIbkFdtqmOOVlzwo67BSQPgWfPOnixOigB6fpdBlOX93QAo9I6Mov/MH6PQzG4YmYYtAzHvml6FjJv2r7yAAACgdJREFUZ0ZEWZlv9M+H4+8vDKrXF8xwEQ+xg+V8HIZKiwLDBbz0tJHjA6RoqKZ7ubfpk1G86NuF34NqXV7PEpIkrAUPCmxR/GA3j55Cnk5rZsRCL8NhNbmXktaX8WWMgeKl8iwvLC/nesCr7ObPXdtHcvm8xPW56Mdf/XKsKzufv379+pl/+KAjcOBYVwj+8MjnHUXDSm753OCf+OdnFik1d24/f8fMie+fj08xY4w1yAPWBQGNBYmn8q6PhO+SPI8f5FNMh/C9vfk8fyjE0OrVfr9aKvqmjlEm4dxd+g9jeCOey+VaMZj4yF4CsxJirVwuF5fSFhUjEffsUE4UkojjfEmi00mCUsU6vZSJGV82A9agST2yxAxFi8F/5dWI9Xgc7gyP6i+usUrYzSCyjCfoY+EyOQ87p6enOzv4gm5/YmJdS2d7GjE6QVK8pd6Ka7FWgjsr8N4tnOj6l0LO6hf1ouce4t9eARZJ9LvfK/5aEtPwVOY7QlaeYX9Rzfa3yfKew3s76bLg4v6HkBORDR6l8bfM0lpXFg1oiT8TYmqeMWwirV9u9GcftjZsJH8igE9xLPYDqA+defsDV5iPZC1BK3pp31t8fw3YVWjR1Y3k3wqQArr5p9VnOlS0ZxNgEpFCbY0s3f+JXN5NYM+GCKctkeX7qSmKZs9wpcS1gJK5jYfneNit66IR/4W+Y6t+L1biL7CE77Gfiwxz5a1EGh/PPxY1h1+4IYGaz3Czd8/+hHRDtVl/2cjY0kqMGHOXiHCQaLyDBzlQSU3uqhFTj/kndcnH8HecThr2lPVWwrxztwCQVuEfiYczY+BQeQ7BM0pX4+AwZCgksCZ4IV3D+Bwlxew14HiC+0tQOB6DP+T33yB/GFkcJXm/T9iWdW2F0hvZZrbBMmEa2Wbzmm3u1b3uuqVi2SwD3mxks9ls1/Nm8jEDfjevi0vKupVojYa2UCB23Wz6KtYb/lvhM2blq69p3nS2mc1edwEgs4GvwJ6f/gdS2KB6eiEWZi8tv/+G+INv/9xLtn8u9nzr7ipkXFeyDf7e15XmdbaSRbJIGj8a4mZGo1JhqOnNSvb6x4+G/BHIx4xsJdu4biT8xz2VJJrNhQJ69sf1dbbhQaXx4zrb9M5KavzINrIABNSCt8Jnj1cq19lKEzFpVBpE0bJNDEXy10hcV7LZZrbLCzeuu6bv/TfKH+ZiP2opxbo3stbcYENrVhqQSQy/u5VszNCuK9f4V6PCcVKUeLZSYbqQaDZjSrfSlLNl5GNmttIwWWfkLeutJOEvEK9UWoZvEaVG8zqb9SSlGteVa5pHiVe3NLYHTKuSNUmDPnq80tSU7g/Pa8B1mhHv4qO0Ktm4TgOj8vtvkj+ALt0s7u+eOUGHKhwoo1Fp4pdFQBPga9NZG7r6pJBGttvAb5U1cXwBJ3HMRH2inRUe5zgtVOK7UIML494Bn1al0ux6c3a6P5pZ+rxUGxtdjpMBHxpcb1xXuiT7g96KvYbeZE9MmD4xlZfe/50FgOD8Ye5Y7VG/REOPuIUF+3+jZvH0y5DKjG62UsF+xMhWoKcw4RuXcSLQIN0GbQPaOPARSrXIx4xspSn6fve4txJPv8cLgOX54bEU+nWz0mw0JAtFFNLNNiu0+4Krs+yTwKan/R50DNfdJr0Tf41Es6nJOGWz1zHf+78/f8gAf8C9wm/sak+QNUUpXhY5URrP2pk1ej7DNIxYE/sGQluxAZ2ThBOBvqOSzVYQRWycJmtuLvIxM1vpGjqbOtd0MfNUIuPEL4Qn6bLzTBqVhnYtjBp9GsOArjkLL51oNruclULTV+A1kOplK00GGX8N6I6BPuKztCrZBLtQev8N8QfgDv2S4A7w3559R1c3grj/wIIpNmFAmY3rRpd2eIqOXVaFdxjwKWPnkGhWGlAIGyfWrLTiTVaGiXzMzFauu40uPlesWenqjP76KqE6K1+oX193Gz+o8WfSqGS71xVgBUKM7nWjy0woVNltIB1QWpVmrPuDUiBQKG4JhZnt/qhcA3ukhcWF8vtvgj84s5v9as9dfRUa42JkzVhyBDSM3QHOFwKU2Wj++NGETx5GyrKVHz+ySG4VpdussA6miyxMy2Ir6FkwBF5eJh8DVgfXUQpHVZMsqUT3X6hdN+Hmcr0aUGmhkPTFutkfP5qUi2tZvBViE282gHZgexNUanZBI4t9Bb3wB+3gYs1Ks9m81jzvvwH+gDTcVSXmxmWG1qyQEbOZlbORNQ7lMcSMd7t0MAw6rVYXGBF1lOKtVqsF1Wm0t9DxP4auG4oR84wXyseIhtehR4nHmSxWsnBhq9uN+RaC6XZbmuZxfo1Yt8vsvqHjrbBeI6ETxUTfFerShXtsMpdbUTS4EA8aMbiOrnXrvv87CWhMr38zm0woDWfH+Dmz2u7c9FkiH2PnhXbY/u4rIzfusJ08+keWRZA8x+SjcrGllSy70LMC0dLHFK3h/y2e272Z9M/SC5eFwd4kyPUzoxn1aF0azk9q445l40YbUiP0bFj8aHOhq0j8QliXB6rEaLjnZM/u0C4PJjKfmYL/DUYRUB8nyB9qJ52Zx6N1T5KLUbvfo1PoYACqJoBKjO01SF8k7xdy/T0DGr6YOAOa9jjiXR56ThaulUiB0qr9YgTURwi0d8lud/Zdj9Z7Vnu0q2yDIwCt1nacExcoM5OJBuE3L9DYxdpoKEXDfQW0TLXOx4wIrCIB3tUJjHEw4M6omxXJZkW76Nt9uobRMqTMXh35AzufGdKI0klN+8uV/CP5CyFGItPPUCd9aWMTAxNc6W/cmZXuqWYNpW0BNrICaiSSkLN6HUeFV7W01y08G+H47tyjT5FsXliftWaqgwbTahCmArNPEdXbNkGqd0/3o3ZGF9SZ8k74jGQLhCgGUD0clRpB0JwQJVGtrmCJkfwjkajevX3GXN7LttVnq2ZHshUiqB5jEKhFCXvmLFtFJ5J/JZhiBIO8c2coPFyj6nTsaDOoLRIcvZ2hNnGiBwo2tEbYA0ayHYLB13scjB/VRU61aXdgED6CaYvEqLYBpnsb5mwwh+vSOonGnrZJMK0SYGqPWWo4SPF3Z528sEg+SoiiXBQwRl4VaZ1EMca4sGWE05ZRPZfo0WOlITDyCKYto3oiVMQkYQMjj2DaFsFMo/sJDxXxg0Y1SovYJuHj7CxUJKRuR1Rvm4SOs0uhIira48WbFySL5L2Dr84w46UMpEezZSPZpuCrNCbIxIBEy0i2RWiq/wwyXr2dHEzAi3q9bREcZ+84IlQkn4hka4RmvlpyqCiSrRSj2umwTPJItpnqdXBljwimbWfkQ9jqKYJpiwUCrQWYgxbBtM2Ck5yA6EXKtO0w1cZRPHz7RXuEGU+RNm25GHUI4EUwbbsYZxEf/38gfMWpSCKJJJJIIokkkkgiiSSSSCJRtlH+D+CLb9yhEuHuAAAAAElFTkSuQmCC" alt="Sunny Energy Rx">
+  <div class="kicker">Prepared for Sunny Energy Rx by Steel Rule Studio &middot; one of three</div>
+  <h1>The call you would have missed</h1>
+  <p class="sub">Your team keeps answering the phone exactly as it does now. This only picks up when
+  nobody can, and after hours. Here is what one of those calls looks like, start to finish.</p>
 </header>
 
-<section>
-  <h2>One week, illustrative</h2>
-  <div class="stats">
-    <div class="stat"><b>31</b><div class="l">calls in</div></div>
-    <div class="stat"><b>18</b><div class="l">reached the team</div></div>
-    <div class="stat hero"><b>13</b><div class="l">would have rung out</div></div>
-    <div class="stat good"><b>9</b><div class="l">answered and qualified</div></div>
-    <div class="stat good"><b>6</b><div class="l">booked a visit</div></div>
-  </div>
-  <p class="note" style="margin-top:12px"><b>These are sample figures, not yours.</b>
-  The point is the third column. Today those thirteen leave no record at all, so
-  nobody can tell a wrong number from a customer who went to a competitor. Once
-  something picks up, every one of them becomes a row you can read.</p>
-</section>
+<div class="frames">
 
-<section>
-  <h2>What answering actually looks like</h2>
-  <div class="split">
-    <div class="panel">
-      <div class="ph"><h3>Tuesday 4:52pm, after hours</h3>
-        <button class="replay" id="replay">Replay</button></div>
-      <div class="convo" id="convo"></div>
+  <section class="frame">
+    <span class="n">1</span>
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="sbar"><span>6:41</span><span>&#9679;&#9679;&#9679;</span></div>
+      <div class="calling">
+        <div class="avatar">SE</div>
+        <div class="name">Sunny Energy Rx</div>
+        <div class="state">calling&hellip;</div>
+        <div class="row"><div class="btn"></div><div class="btn end"></div></div>
+      </div>
+    </div></div>
+    <div class="cap">
+      <h2>Tuesday, 6:41 PM. The office is closed.</h2>
+      <p>Maria's app has been red for two weeks and her APS bill just landed. She calls the number on
+      your website.</p>
+      <p>Today nobody picks up and you never know she called. With the line in place, your office phones
+      still ring four times. If nobody answers, the call forwards to the line. <b>Your number stays the same.</b></p>
     </div>
-    <div class="panel">
-      <div class="ph"><h3>What it worked out</h3></div>
-      <div class="ext" id="ext"></div>
-    </div>
-  </div>
-  <p class="note" style="margin-top:12px">Chris said most callers open with one of
-  four or five things. That is what makes this tractable. The agent is not holding
-  an open ended conversation, it is separating a serviceable job from a wrong
-  number, and handing anything unusual straight to a person.</p>
-</section>
+  </section>
 
-<section>
-  <h2>And then it did these, without anyone touching it</h2>
-  <div class="outcome">
-    <div class="oc">
-      <div class="t">Booked</div>
-      <div class="m">Thursday 18 Sep, 8am to 11am</div>
-      <p>Written into the open slot on the schedule. One entry, not typed twice.</p>
+  <section class="frame">
+    <span class="n">2</span>
+    <div class="tag">Phone call</div>
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="sbar"><span>6:41</span><span>&#9679;&#9679;&#9679;</span></div>
+      <div class="apphead"><div class="who">Sunny Energy Rx</div><div class="meta">After hours line &middot; 2 min 14 sec</div></div>
+      <div class="chat">
+        <div class="bub a">Thanks for calling Sunny Energy Rx. This is the after hours line. I'm an automated assistant and this call is recorded. I can get a technician scheduled for you. What's going on with the system?</div>
+        <div class="bub c">My app's been showing red for like two weeks and my bill just went way up.</div>
+        <div class="bub a">Sorry to hear that, let's get someone out. Do you know who made your inverter? It's usually a grey box near your electrical panel.</div>
+        <div class="bub c">SolarEdge, I think.</div>
+        <div class="bub a">Great. And who installed it originally?</div>
+        <div class="bub c">Titan. They're gone now.</div>
+        <div class="bub a">That's fine, we service a lot of those. What is the address for the visit?</div>
+        <div class="bub c">4821 East Cactus Road, Phoenix.</div>
+        <div class="bub a">I have a diagnostic visit open Tuesday between 8 and 11, or Thursday between 1 and 4. Which is better?</div>
+        <div class="bub c">Tuesday.</div>
+        <div class="bub a">You're set for Tuesday the 22nd, between 8 and 11. I'll text a confirmation to this number now.</div>
+      </div>
+    </div></div>
+    <div class="cap">
+      <h2>It says it is an automated line, then books the visit.</h2>
+      <p>It asks four things: what the system is doing, who made the inverter, who installed it, and the
+      address. Then it offers the two times that are open on your calendar, books the one she picks, and
+      writes it there once. It never guesses at a diagnosis and it never quotes a price.</p>
+      <p>If the caller asks for a person during business hours, it transfers. After hours it books or
+      takes a message. <b>Anything it cannot handle becomes a callback for the office.</b></p>
     </div>
-    <div class="oc">
-      <div class="t">Texted the customer</div>
-      <div class="m">Confirmation, 4:54pm</div>
-      <div class="sms">Sunny Energy RX: you are booked Thu 18 Sep, 8 to 11am for a
-      diagnostic on your SolarEdge system. Reply R to move it.</div>
-    </div>
-    <div class="oc">
-      <div class="t">Flagged for the office</div>
-      <div class="m">Orphaned Titan system</div>
-      <p>Installer out of business, so the workmanship warranty is gone but the
-      SolarEdge equipment warranty may still be live. Worth checking before the visit.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section>
-  <h2>The ledger, which is the part that matters</h2>
-  <div class="tablewrap">
-    <table>
-      <thead><tr>
-        <th>When</th><th>Caller</th><th>What they wanted</th>
-        <th>Reached a person?</th><th>Outcome</th>
-      </tr></thead>
-      <tbody id="ledger"></tbody>
-    </table>
-  </div>
-  <p class="note" style="margin-top:12px">Shaded rows are calls that would have rung
-  out today. <b>Four of them booked a visit.</b> The two marked as not a fit are
-  worth as much as the bookings, because knowing a call was a solar sales cold call
-  is how you stop wondering what you lost.</p>
-</section>
+  <section class="frame">
+    <span class="n">3</span>
+    <div class="tag">Text message</div>
+    <div class="phone"><div class="screen">
+      <div class="island"></div>
+      <div class="sbar"><span>6:44</span><span>&#9679;&#9679;&#9679;</span></div>
+      <div class="apphead"><div class="who">Sunny Energy Rx</div><div class="meta">(602) 555-0100</div></div>
+      <div class="sms">
+        <div class="from">Today 6:44 PM</div>
+        <div class="msg">Sunny Energy Rx: You're booked for a diagnostic visit <b>Tue Sep 22, between 8 and 11 AM</b>, at 4821 E Cactus Rd. A tech will call when on the way. Need a different time? Tap <a href="#">sunnyenergyrx.com/r/8f2k</a></div>
+        <div class="t">Delivered</div>
+        <div class="from">Mon Sep 21, 5:00 PM</div>
+        <div class="msg">Reminder from Sunny Energy Rx: your diagnostic visit is tomorrow, between 8 and 11 AM. Reply C to confirm or tap the link to move it.</div>
+        <div class="t">Delivered</div>
+      </div>
+    </div></div>
+    <div class="cap">
+      <h2>A confirmation text arrives within a minute.</h2>
+      <p>Confirmation right away, a reminder the evening before, and a link to move it herself. Nobody on
+      your side types any of it.</p>
+      <p><b>After the job, the same text carries the Google review link</b>, which goes out by hand today.</p>
+    </div>
+  </section>
 
-<footer>
-  <b>What this is.</b> A demonstration of the flow, built from what you described on
-  the call. It is not connected to your phone line or to Zoho FSM yet, and the names,
-  addresses and numbers are invented. What would take real work is the connection to
-  your calendar and to Zoho, which is what the estimate covers.
-</footer>
+  <section class="frame wide">
+    <span class="n">4</span>
+    <div class="window">
+      <div class="bar"><i></i><i></i><i></i><span>Sunny Energy Rx &middot; Calls &middot; last night</span></div>
+      <div class="pane">
+        <div class="strip">
+          <div><b>4</b><span>calls after hours</span></div>
+          <div><b>1</b><span>visit booked</span></div>
+          <div><b>2</b><span>callbacks for the office</span></div>
+          <div><b>1</b><span>spam, ignored</span></div>
+        </div>
+        <table>
+          <tr><th>Time</th><th>Caller</th><th>What they said</th><th>Outcome</th><th></th></tr>
+          <tr><td class="t">6:41 PM</td><td><b>Maria Reyes</b><br><span style="color:var(--faint)">(602) 555-0148</span></td><td>SolarEdge, no production about two weeks, high APS bill. Installed by Titan.</td><td><span class="pill ok">Booked Tue 9/22, 8 to 11</span></td><td><span class="link">Transcript</span></td></tr>
+          <tr><td class="t">6:52 PM</td><td><span style="color:var(--faint)">(480) 555-0193</span></td><td>Hung up during the greeting, 4 seconds.</td><td><span class="pill spam">Likely spam</span></td><td></td></tr>
+          <tr><td class="t">7:15 PM</td><td><b>Dale Whitaker</b><br><span style="color:var(--faint)">(623) 555-0177</span></td><td>Wants to add a battery to an existing SolarEdge system. Not a repair.</td><td><span class="pill cb">Callback: Chris, Wed AM</span></td><td><span class="link">Transcript</span></td></tr>
+          <tr><td class="t">8:03 PM</td><td><span style="color:var(--faint)">(602) 555-0122</span></td><td>"Is this Titan Solar?" Left a name and number.</td><td><span class="pill cb">Callback requested</span></td><td><span class="link">Transcript</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="cap">
+      <h2>Wednesday morning, every call is on one list.</h2>
+      <p>Every call, what they wanted, and what happened, with the recording and the transcript one tap
+      away. Today a missed call leaves no record, so a wrong number and a customer who went elsewhere look the same. <b>From the
+      first night, the list shows how many calls came in and what each one wanted.</b></p>
+    </div>
+  </section>
 
 </div>
 
-<script>
-// Illustrative call. Nothing here is real customer data.
-const TURNS = [
-  {w:"agent", who:"AGENT", t:"Sunny Energy RX, service line. How can I help?"},
-  {w:"them",  who:"CALLER", t:"Hi, yeah. My solar's been off about two weeks. The app's showing some kind of error."},
-  {w:"agent", who:"AGENT", t:"Sorry about that, we can take a look. Can I get the service address?"},
-  {w:"them",  who:"CALLER", t:"It's in Sun City West, 85375."},
-  {w:"agent", who:"AGENT", t:"That's in our area. Do you know who put the system in?"},
-  {w:"them",  who:"CALLER", t:"Titan. They went under, that's the whole problem."},
-  {w:"agent", who:"AGENT", t:"We see a lot of those. Does the error give you a code?"},
-  {w:"them",  who:"CALLER", t:"It says something about isolation? There's a red light on the box."},
-  {w:"agent", who:"AGENT", t:"An isolation fault usually means someone on the roof rather than a reset. I have Thursday morning or Friday afternoon."},
-  {w:"them",  who:"CALLER", t:"Thursday's better."},
-  {w:"agent", who:"AGENT", t:"Booked, Thursday the 18th between 8 and 11. You'll get a text to confirm."}
-];
+<section class="means">
+  <h2>What this means for you</h2>
+  <ul>
+    <li><b>You keep answering your own phone.</b> This only catches what you would otherwise have missed, and after hours.</li>
+    <li><b>Booked into a real slot.</b> The visit goes on your calendar and a confirmation text goes out, without anyone at the office touching it.</li>
+    <li><b>You see the calls you were missing.</b> Every one logged, with a recording and a transcript, from the first night.</li>
+  </ul>
+</section>
 
-// Each field resolves at the turn where the agent actually learns it.
-const FIELDS = [
-  {k:"Address",    at:3,  v:"Sun City West, AZ 85375", s:"Caller ID captured"},
-  {k:"In area",    at:4,  v:"Yes", badge:"b-ok", bt:"serviceable"},
-  {k:"Installer",  at:5,  v:"Titan Solar", s:"Out of business since June 2024", badge:"b-warn", bt:"orphan"},
-  {k:"Inverter",   at:7,  v:"SolarEdge", s:"Inferred from the error code format"},
-  {k:"Fault",      at:8,  v:"Isolation fault", s:"Not resettable remotely, needs a site visit"},
-  {k:"Needs",      at:8,  v:"Diagnostic site visit"},
-  {k:"Worth it",   at:8,  v:"Yes", badge:"b-ok", bt:"qualified"},
-  {k:"Booked",     at:10, v:"Thu 18 Sep, 8 to 11am"}
-];
-
-const LEDGER = [
-  ["Mon 7:41am","Sun City West","System down, no production","No","Booked Wed"],
-  ["Mon 11:02am","Surprise","Quote for added panels","Yes","Quoted"],
-  ["Mon 6:18pm","Peoria","Inverter error after storm","No","Booked Thu"],
-  ["Tue 8:55am","Goodyear","Monitoring app login","Yes","Resolved on the call"],
-  ["Tue 1:30pm","Withheld","Solar sales cold call","No","Not a fit"],
-  ["Tue 4:52pm","Sun City West","Isolation fault, two weeks down","No","Booked Thu"],
-  ["Wed 7:12am","Buckeye","Panel cleaning","Yes","Booked Mon"],
-  ["Wed 5:47pm","Glendale","Production down, high bill","No","Booked Fri"],
-  ["Thu 12:20pm","Withheld","Wrong number","No","Not a fit"],
-  ["Thu 6:31pm","Avondale","Battery add on","No","Callback booked"],
-  ["Fri 7:58am","Mesa","Roof leak near mounts","Yes","Referred out"]
-];
-
-const ext = document.getElementById("ext");
-const convo = document.getElementById("convo");
-let timer = null;
-
-function paintExt(upto){
-  ext.innerHTML = FIELDS.map(f => {
-    const known = upto >= f.at;
-    return `<div class="row ${known?"":"pend"}">
-      <span class="k">${f.k}</span>
-      <span class="v">${known ? f.v + (f.badge?`<span class="badge ${f.badge}">${f.bt}</span>`:"")
-                              : "listening"}
-        ${known && f.s ? `<small>${f.s}</small>` : ""}
-      </span></div>`;
-  }).join("");
-}
-
-function paintConvo(upto){
-  convo.innerHTML = TURNS.slice(0, upto+1).map(t =>
-    `<div class="turn ${t.w}"><span class="tag">${t.who}</span>
-     <span class="bub">${t.t}</span></div>`).join("");
-  convo.scrollTop = convo.scrollHeight;
-}
-
-function showAll(){
-  clearInterval(timer);
-  paintConvo(TURNS.length-1);
-  paintExt(TURNS.length-1);
-}
-
-function replay(){
-  clearInterval(timer);
-  let i = -1;
-  paintConvo(-1); paintExt(-1);
-  timer = setInterval(() => {
-    i++;
-    if (i >= TURNS.length){ clearInterval(timer); return; }
-    paintConvo(i); paintExt(i);
-  }, 850);
-}
-
-document.getElementById("ledger").innerHTML = LEDGER.map(r => {
-  const missed = r[3] === "No";
-  return `<tr class="${missed?"miss":""}">
-    <td class="mono">${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>
-    <td class="mono">${r[3]}</td><td>${r[4]}</td></tr>`;
-}).join("");
-
-document.getElementById("replay").addEventListener("click", replay);
-
-// At rest the whole call is already on screen. Replay is opt in, so nothing the
-// reader needs is hidden behind an animation they have to wait for.
-showAll();
-</script>
+<footer>Names, numbers and addresses on these screens are made up. The conversation shown is the script we start with. We adjust the questions to your calls in the first two weeks.</footer>
+</div>
 </body>
 </html>
